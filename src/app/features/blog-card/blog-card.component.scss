@@ -1,0 +1,44 @@
+.blog-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 8px 0;
+  background-color: #fff;
+
+  .header-image {
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .blog-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .blog-content-preview {
+    font-size: 1em;
+    color: #555;
+    margin: 8px 0;
+  }
+
+  .blog-meta,
+  .blog-stats,
+  .user-actions {
+    font-size: 0.9em;
+    color: #777;
+    display: flex;
+    justify-content: space-between;
+    margin: 4px 0;
+  }
+
+  .edit-title {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+
+    input {
+      margin-right: 8px;
+    }
+  }
+}
