@@ -1,7 +1,7 @@
 <div>
   <!-- Blog Overview -->
   <div class="blog-entries" *ngIf="blogOverview$ | async as entries">
-    <blog-card *ngFor="let entry of entries" [blogEntryOverview]="entry">
+    <app-blog-card *ngFor="let entry of entries" [blogEntryOverview]="entry">
       <ng-container *ngIf="entry.headerImageUrl">
         <img
           class="header-image"
@@ -9,6 +9,6 @@
           alt="Header Image"
         />
       </ng-container>
-    </blog-card>
+    </app-blog-card>
   </div>
 </div>
