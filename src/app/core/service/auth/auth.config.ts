@@ -1,3 +1,4 @@
+/*
 // src/app/auth.config.ts
 export const keycloakConfig = {
   realm: 'blog',
@@ -8,3 +9,5 @@ export const keycloakConfig = {
   accountService:
     'https://d-cap-keyclaok.kindbay-711f60b2.westeurope.azurecontainerapps.io/realms/blog/account',
 };
+
+*/

@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 
-import { BlogEntryOverview } from '../../interfaces/blog-entry-overview';
+import {
+  BlogEntryOverview,
+  BlogEntryOverviewResponse,
+} from '../../interfaces/blog-entry-overview';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -20,10 +23,12 @@ export class BlogBackendService {
 
     console.log('Fetching blog entries...');
     return this.http
-      .get<
-        BlogEntryOverview[]
-      >(`${environment.backendUrl}/entries`, { params, headers })
+      .get<BlogEntryOverviewResponse>(`${environment.backendUrl}/entries`, {
+        params,
+        headers,
+      })
       .pipe(
+        map((response) => response.data),
         tap((data) => console.log('Received data:', data)),
         catchError((error) => {
           console.error('Error fetching blog entries:', error);

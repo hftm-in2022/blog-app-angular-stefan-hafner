@@ -1,44 +1,103 @@
-.blog-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  margin: 8px 0;
-  background-color: #fff;
+/* SCSS Styles for Blog Card Component */
 
-  .header-image {
-    width: 100%;
-    border-radius: 8px 8px 0 0;
+.blog-card {
+  border: 1px solid #ccc; /* Adding a light grey border */
+  border-radius: 8px; /* Adding rounded corners */
+  max-width: 800px; /* Setting a maximum width for the card */
+  margin: 20px auto; /* Centering the card and adding some margin */
+  padding: 16px; /* Adding padding inside the card */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding a subtle shadow for depth */
+  background-color: #fff; /* Setting the background color to white */
+
+  .header {
+    img.header-image {
+      max-width: 100%; /* Ensuring the image fits within the card */
+      border-radius: 8px 8px 0 0; /* Matching the rounded corners at the top */
+    }
   }
 
   .blog-title {
     font-size: 1.5em;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin: 10px 0;
   }
 
   .blog-content-preview {
     font-size: 1em;
-    color: #555;
-    margin: 8px 0;
+    color: #333;
+    margin: 10px 0;
   }
 
-  .blog-meta,
-  .blog-stats,
-  .user-actions {
+  .blog-meta {
     font-size: 0.9em;
     color: #777;
+    margin: 10px 0;
     display: flex;
     justify-content: space-between;
-    margin: 4px 0;
+  }
+
+  .blog-stats {
+    font-size: 0.9em;
+    margin: 10px 0;
+    color: #444;
+  }
+
+  .user-actions {
+    margin: 20px 0;
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition:
+        background-color 0.3s,
+        box-shadow 0.3s;
+
+      &.like-button {
+        background-color: #4caf50;
+        color: #fff;
+        &:hover {
+          background-color: #45a049;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      &.unlike-button {
+        background-color: #f44336;
+        color: #fff;
+        &:hover {
+          background-color: #e53935;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
   }
 
   .edit-title {
-    margin-top: 8px;
+    margin: 20px 0;
     display: flex;
     align-items: center;
-
     input {
-      margin-right: 8px;
+      padding: 8px;
+      font-size: 1em;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #2196f3;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition:
+        background-color 0.3s,
+        box-shadow 0.3s;
+      &:hover {
+        background-color: #1e88e5;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
     }
   }
 }

@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
 import { BlogEntryOverview } from '../../interfaces/blog-entry-overview';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-blog-card',
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe, CommonModule],
   templateUrl: './blog-card.component.html',
   styleUrl: './blog-card.component.scss',
 })

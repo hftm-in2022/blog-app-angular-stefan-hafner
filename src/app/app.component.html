@@ -1,7 +1,10 @@
 <div>
   <!-- Blog Overview -->
-  <div class="blog-entries" *ngIf="blogOverview$ | async as entries">
-    <app-blog-card *ngFor="let entry of entries" [blogEntryOverview]="entry">
+  <div class="blog-entries">
+    <app-blog-card
+      *ngFor="let entry of blogOverview$ | async"
+      [blogEntryOverview]="entry"
+    >
       <ng-container *ngIf="entry.headerImageUrl">
         <img
           class="header-image"
