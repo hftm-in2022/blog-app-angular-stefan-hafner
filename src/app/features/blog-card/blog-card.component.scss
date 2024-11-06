@@ -1,102 +1,102 @@
-/* SCSS Styles for Blog Card Component */
-
-.blog-card {
-  border: 1px solid #ccc; /* Adding a light grey border */
-  border-radius: 8px; /* Adding rounded corners */
-  max-width: 800px; /* Setting a maximum width for the card */
-  margin: 20px auto; /* Centering the card and adding some margin */
-  padding: 16px; /* Adding padding inside the card */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding a subtle shadow for depth */
-  background-color: #fff; /* Setting the background color to white */
-
-  .header {
-    img.header-image {
-      max-width: 100%; /* Ensuring the image fits within the card */
-      border-radius: 8px 8px 0 0; /* Matching the rounded corners at the top */
-    }
-  }
-
-  .blog-title {
-    font-size: 1.5em;
-    font-weight: bold;
-    margin: 10px 0;
-  }
-
-  .blog-content-preview {
-    font-size: 1em;
-    color: #333;
-    margin: 10px 0;
-  }
-
-  .blog-meta {
-    font-size: 0.9em;
-    color: #777;
-    margin: 10px 0;
+:host {
+  .blog-card {
+    margin: 0.625rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
-    justify-content: space-between;
-  }
+    flex-direction: column;
+    justify-content: space-between; /* Ensures footer stays at the bottom */
 
-  .blog-stats {
-    font-size: 0.9em;
-    margin: 10px 0;
-    color: #444;
-  }
+    /* Responsive width adjustments */
+    @media screen and (min-width: 450px) {
+      width: 400px;
+    }
+    @media screen and (min-width: 841px) {
+      width: 840px;
+    }
+    @media screen and (min-width: 1261px) {
+      width: 1260px;
+    }
+    @media screen and (min-width: 1681px) {
+      width: 1680px;
+    }
 
-  .user-actions {
-    margin: 20px 0;
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition:
-        background-color 0.3s,
-        box-shadow 0.3s;
+    .header {
+      img {
+        width: 100%;
+        height: auto;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+      }
+    }
 
-      &.like-button {
-        background-color: #4caf50;
+    .blog-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin: 0.5rem;
+      color: #333;
+      text-align: center;
+    }
+
+    .blog-content-preview {
+      font-size: 1rem;
+      margin: 0.5rem;
+      color: #555;
+    }
+
+    .blog-stats {
+      font-size: 0.875rem;
+      color: #777;
+      margin: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+
+      .likes,
+      .comments {
+        margin-right: 1rem;
+      }
+    }
+
+    .user-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0.5rem;
+
+      button {
+        background-color: #007bff;
         color: #fff;
+        border: none;
+        border-radius: 0.25rem;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
         &:hover {
-          background-color: #45a049;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          background-color: #0056b3;
         }
       }
 
-      &.unlike-button {
-        background-color: #f44336;
-        color: #fff;
-        &:hover {
-          background-color: #e53935;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
+      .created-by-me {
+        font-size: 0.875rem;
+        color: #28a745;
+        font-weight: bold;
       }
-    }
-  }
 
-  .edit-title {
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
-    input {
-      padding: 8px;
-      font-size: 1em;
-      margin-right: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #2196f3;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition:
-        background-color 0.3s,
-        box-shadow 0.3s;
-      &:hover {
-        background-color: #1e88e5;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      .blog-meta {
+        font-size: 0.875rem;
+        color: #777;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+      .author {
+        font-weight: bold;
+        margin-left: auto;
+        font-size: 0.875rem;
+        color: #777;
       }
     }
   }

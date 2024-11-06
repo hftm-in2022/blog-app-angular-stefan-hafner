@@ -3,8 +3,8 @@ import { RouterOutlet } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { BlogCardComponent } from './features/blog-card/blog-card.component';
-import { BlogEntryOverview } from './interfaces/blog-entry-overview';
-import { BlogBackendService } from './core/service/blog-backend.service';
+import { BlogEntryOverview } from './core/interfaces/blog-entry-overview';
+import { BlogBackendService } from './core/service/blogBackend/blog-backend.service';
 
 @Component({
   selector: 'app-root',

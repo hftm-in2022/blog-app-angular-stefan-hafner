@@ -1,17 +1,16 @@
 <div>
   <!-- Blog Overview -->
   <div class="blog-entries">
-    <app-blog-card
-      *ngFor="let entry of blogOverview$ | async"
-      [blogEntryOverview]="entry"
-    >
-      <ng-container *ngIf="entry.headerImageUrl">
-        <img
-          class="header-image"
-          [src]="entry.headerImageUrl"
-          alt="Header Image"
-        />
-      </ng-container>
-    </app-blog-card>
+    @for (entry of blogOverview$ | async; track entry) {
+      <app-blog-card [blogEntryOverview]="entry">
+        @if (entry.headerImageUrl) {
+          <img
+            class="header-image"
+            [src]="entry.headerImageUrl"
+            alt="Header Image"
+          />
+        }
+      </app-blog-card>
+    }
   </div>
 </div>

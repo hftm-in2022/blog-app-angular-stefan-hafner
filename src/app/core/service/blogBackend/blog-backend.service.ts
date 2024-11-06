@@ -6,7 +6,7 @@ import {
   BlogEntryOverview,
   BlogEntryOverviewResponse,
 } from '../../interfaces/blog-entry-overview';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { BlogEntryOverview } from '../../interfaces/blog-entry-overview';
+import { BlogEntryOverview } from '../../core/interfaces/blog-entry-overview';
 
 @Component({
   selector: 'app-blog-card',
@@ -25,9 +25,5 @@ export class BlogCardComponent implements OnInit {
   onUnlikeClicked() {
     this.blogEntryOverview.likedByMe = false;
     this.blogEntryOverview.likes--;
-  }
-
-  onSaveClicked(newTitle: string) {
-    this.blogEntryOverview.title = newTitle;
   }
 }
