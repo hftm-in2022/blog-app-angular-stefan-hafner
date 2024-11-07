@@ -1,0 +1,17 @@
+<!-- Blog Overview -->
+<div class="blog-overview">
+  @for (entry of blogOverview$ | async; let i = $index; track entry) {
+    <app-blog-card [blogEntryOverview]="entry" [cardIndex]="i">
+      <a [routerLink]="['/blog-detail', entry.id]">
+        <!-- Link to the blog detail page -->
+        @if (entry.headerImageUrl) {
+          <img
+            class="header-image"
+            [src]="entry.headerImageUrl"
+            alt="Header Image"
+          />
+        }
+      </a>
+    </app-blog-card>
+  }
+</div>

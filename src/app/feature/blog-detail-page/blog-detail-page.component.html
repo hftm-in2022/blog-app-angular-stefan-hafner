@@ -1,0 +1,84 @@
+<div class="blog-card">
+  <!-- Header Section with Image -->
+  @if (blogEntry.headerImageUrl) {
+    <div class="header">
+      <img
+        [src]="blogEntry.headerImageUrl"
+        alt="Header Image"
+        class="header-image"
+      />
+    </div>
+  }
+
+  <!-- Blog Title -->
+  <div class="blog-title">
+    <span>{{ blogEntry.title }}</span>
+  </div>
+
+  <!-- Blog Content -->
+  <div class="blog-content">
+    {{ blogEntry.content }}
+  </div>
+
+  <!-- Blog Stats: Likes and Comments Count -->
+  <div class="blog-stats">
+    <span class="likes">Likes: {{ blogEntry.likes }}</span>
+    <span class="comments">Comments: {{ blogEntry.comments.length }}</span>
+  </div>
+
+  <!-- User Actions and Status -->
+  <div class="user-actions">
+    @if (!blogEntry.likedByMe) {
+      <button
+        (click)="onLikeClicked()"
+        (keyup.enter)="onLikeClicked()"
+        class="button"
+      >
+        Like
+      </button>
+    }
+    @if (blogEntry.likedByMe) {
+      <button
+        (click)="onUnlikeClicked()"
+        (keyup.enter)="onUnlikeClicked()"
+        class="button"
+      >
+        Unlike
+      </button>
+    }
+    @if (blogEntry.createdByMe) {
+      <span class="created-by-me">You created this entry</span>
+    }
+    <!-- Author -->
+    <span class="author">Author: {{ blogEntry.author }}</span>
+  </div>
+
+  <!-- Comment Section -->
+  <div class="comments-section">
+    <h3>Comments</h3>
+    @if (blogEntry.comments?.length) {
+      <div>
+        @for (comment of blogEntry.comments; track comment) {
+          <div class="comment">
+            <p>
+              <strong>{{ comment.author }}</strong> -
+              {{ comment.createdAt | date }}
+            </p>
+            <p>{{ comment.content }}</p>
+          </div>
+        }
+      </div>
+    } @else {
+      <p>No comments available.</p>
+    }
+
+    <!-- Add Comment -->
+    <div class="add-comment">
+      <textarea
+        [(ngModel)]="newCommentContent"
+        placeholder="Add a comment"
+      ></textarea>
+      <button (click)="addComment()" class="button">Submit</button>
+    </div>
+  </div>
+</div>

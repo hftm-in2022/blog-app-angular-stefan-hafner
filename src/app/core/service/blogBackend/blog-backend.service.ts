@@ -7,6 +7,7 @@ import {
   BlogEntryOverviewResponse,
 } from '../../interfaces/blog-entry-overview';
 import { environment } from '../../../../environments/environment';
+import { BlogEntry } from '../../interfaces/blog-entry';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +34,24 @@ export class BlogBackendService {
         catchError((error) => {
           console.error('Error fetching blog entries:', error);
           return of([]); // Fallback auf leeres Array bei Fehler
+        }),
+      );
+  }
+
+  getBlogDetail(id: number): Observable<BlogEntry> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    console.log('Fetching blog detail...');
+    return this.http
+      .get<BlogEntry>(`${environment.backendUrl}/entries/${id}`, {
+        headers,
+      })
+      .pipe(
+        tap((data) => console.log('Received data:', data)),
+        catchError((error) => {
+          console.error('Error fetching blog detail:', error);
+          return of({} as BlogEntry);
         }),
       );
   }
