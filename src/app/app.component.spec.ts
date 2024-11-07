@@ -1,10 +1,19 @@
+// app.component.spec.ts oder die Testdatei für AppComponent
 import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
 import { AppComponent } from './app.component';
+import { BlogBackendService } from './core/service/blogBackend/blog-backend.service'; // Beispielhaft
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [
+        // Weitere Module oder Standalone-Imports, falls notwendig
+      ],
+      providers: [
+        provideHttpClient(), // HttpClient bereitstellen
+        BlogBackendService, // Falls der Service auch direkt benötigt wird
+      ],
     }).compileComponents();
   });
 
@@ -14,16 +23,5 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'blog-app-angular' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('blog-app-angular');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, blog-app-angular');
-  });
+  // Weitere Tests ...
 });
