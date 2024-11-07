@@ -1,3 +1,5 @@
+import { Comment } from './comment';
+
 export interface BlogEntry {
   id: number;
   title: string;

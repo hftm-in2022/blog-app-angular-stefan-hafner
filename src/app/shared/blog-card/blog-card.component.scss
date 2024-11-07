@@ -29,15 +29,51 @@
         height: auto;
         border-top-left-radius: 0.5rem;
         border-top-right-radius: 0.5rem;
+        transition:
+          transform 0.3s ease,
+          opacity 0.3s ease; // Smooth transition for hover effects
+        cursor: pointer; // Changes cursor to pointer on hover to indicate it's clickable
+
+        &:hover {
+          opacity: 0.9; // Slightly reduces opacity for a subtle effect
+          transform: scale(1.02); // Slight zoom effect
+        }
       }
     }
 
+    .button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 0.25rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+
+    .goToDeatilsPage-button {
+      margin-left: auto; // Moves the button to the right
+    }
+
     .blog-title {
+      display: flex; // Enables Flexbox for horizontal layout
+      align-items: center; // Centers items vertically
+      justify-content: center; // Centers the title by default
+
       font-size: 1.25rem;
       font-weight: bold;
       margin: 0.5rem;
       color: #333;
       text-align: center;
+    }
+
+    .title {
+      flex: 1; // Takes up remaining space between start and button
+      text-align: center; // Centers the title within its flex area
     }
 
     .blog-content-preview {
@@ -64,20 +100,6 @@
       align-items: center;
       justify-content: space-between;
       margin: 0.5rem;
-
-      button {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 0.25rem;
-        padding: 0.5rem 1rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-
-        &:hover {
-          background-color: #0056b3;
-        }
-      }
 
       .created-by-me {
         font-size: 0.875rem;

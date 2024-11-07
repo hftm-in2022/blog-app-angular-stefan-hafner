@@ -1,16 +1,14 @@
-<div>
-  <!-- Blog Overview -->
-  <div class="blog-entries">
-    @for (entry of blogOverview$ | async; track entry) {
-      <app-blog-card [blogEntryOverview]="entry">
-        @if (entry.headerImageUrl) {
-          <img
-            class="header-image"
-            [src]="entry.headerImageUrl"
-            alt="Header Image"
-          />
-        }
-      </app-blog-card>
-    }
-  </div>
+<div class="app-container">
+  <header>
+    <!-- Navbar or header content -->
+  </header>
+
+  <main>
+    <router-outlet></router-outlet>
+    <!-- Dynamic content goes here -->
+  </main>
+
+  <footer>
+    <!-- Footer content -->
+  </footer>
 </div>

@@ -7,13 +7,26 @@
           [src]="blogEntryOverview.headerImageUrl"
           alt="Header Image"
           class="header-image"
+          (click)="goToDeatilsPage()"
+          (keyup.enter)="goToDeatilsPage()"
+          tabindex="0"
         />
+        <!-- Makes the image focusable -->
+      </div>
+      <!-- Blog Title -->
+      <div class="blog-title">
+        <span>{{ blogEntryOverview.title }}</span>
+      </div>
+    } @else {
+      <!-- Blog Title -->
+      <div class="blog-title">
+        <span class="title">{{ blogEntryOverview.title }}</span>
+        <span class="goToDeatilsPage-button">
+          <button (click)="goToDeatilsPage()" class="button">Details</button>
+        </span>
       </div>
     }
-    <!-- Blog Title -->
-    <div class="blog-title">
-      {{ cardIndex || "" + " " + blogEntryOverview.title }}
-    </div>
+
     <!-- Blog Content Preview -->
     <div class="blog-content-preview">
       {{ blogEntryOverview.contentPreview }}
@@ -26,10 +39,10 @@
     <!-- User Actions and Status -->
     <div class="user-actions">
       @if (!blogEntryOverview.likedByMe) {
-        <button (click)="onLikeClicked()">Like</button>
+        <button (click)="onLikeClicked()" class="button">Like</button>
       }
       @if (blogEntryOverview.likedByMe) {
-        <button (click)="onUnlikeClicked()">Unlike</button>
+        <button (click)="onUnlikeClicked()" class="button">Unlike</button>
       }
       @if (blogEntryOverview.createdByMe) {
         <span class="created-by-me">You created this entry</span>
