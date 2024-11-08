@@ -32,13 +32,14 @@
         transition:
           transform 0.3s ease,
           opacity 0.3s ease; // Smooth transition for hover effects
-        cursor: pointer; // Changes cursor to pointer on hover to indicate it's clickable
-
-        &:hover {
-          opacity: 0.9; // Slightly reduces opacity for a subtle effect
-          transform: scale(1.02); // Slight zoom effect
-        }
+        cursor: default;
       }
+    }
+
+    .header.overview img:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+      cursor: pointer;
     }
 
     .button {
@@ -119,6 +120,52 @@
         margin-left: auto;
         font-size: 0.875rem;
         color: #777;
+      }
+    }
+  }
+
+  .blog-content {
+    font-size: 1rem;
+    margin: 0.5rem;
+    color: #555;
+  }
+
+  .comments-section {
+    margin-top: 1rem;
+
+    h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+
+    .comment {
+      border-top: 1px solid #ddd;
+      padding: 0.5rem 0;
+      font-size: 0.9rem;
+      color: #555;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .add-comment {
+      display: flex;
+      flex-direction: column;
+      margin-top: 1rem;
+
+      textarea {
+        resize: vertical;
+        padding: 0.5rem;
+        font-size: 1rem;
+        border-radius: 0.25rem;
+        border: 1px solid #ddd;
+        margin-bottom: 0.5rem;
+      }
+
+      .button {
+        align-self: flex-start;
       }
     }
   }

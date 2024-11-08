@@ -1,54 +1,98 @@
-@if (blogEntryOverview) {
+@if (blog) {
   <div class="blog-card" #container>
     <!-- Header Section with Image -->
-    @if (blogEntryOverview.headerImageUrl) {
-      <div class="header">
-        <img
-          [src]="blogEntryOverview.headerImageUrl"
-          alt="Header Image"
-          class="header-image"
-          (click)="goToDeatilsPage()"
-          (keyup.enter)="goToDeatilsPage()"
-          tabindex="0"
-        />
-        <!-- Makes the image focusable -->
+    @if (blog.headerImageUrl) {
+      <div class="header" [ngClass]="{ overview: isOverview }">
+        @if (isOverview) {
+          <img
+            [src]="blog.headerImageUrl"
+            alt="Header Image"
+            class="header-image"
+            (click)="goToDetailsPage()"
+            (keyup.enter)="goToDetailsPage()"
+            tabindex="0"
+          />
+        } @else {
+          <img
+            [src]="blog.headerImageUrl"
+            alt="Header Image"
+            class="header-image"
+          />
+        }
       </div>
-      <!-- Blog Title -->
       <div class="blog-title">
-        <span>{{ blogEntryOverview.title }}</span>
+        <span class="title">{{ blog.title }}</span>
       </div>
     } @else {
       <!-- Blog Title -->
       <div class="blog-title">
-        <span class="title">{{ blogEntryOverview.title }}</span>
-        <span class="goToDeatilsPage-button">
-          <button (click)="goToDeatilsPage()" class="button">Details</button>
-        </span>
+        <span class="title">{{ blog.title }}</span>
+        @if (isOverview) {
+          <span class="goToDetailsPage-button">
+            <button (click)="goToDetailsPage()" class="button">Details</button>
+          </span>
+        }
       </div>
     }
 
     <!-- Blog Content Preview -->
-    <div class="blog-content-preview">
-      {{ blogEntryOverview.contentPreview }}
-    </div>
+    @if (!isBlogEntry(blog) && isOverview) {
+      <div class="blog-content-preview">
+        {{ blog.contentPreview }}
+      </div>
+    } @else if (isBlogEntry(blog)) {
+      <div class="blog-content">
+        {{ blog.content }}
+      </div>
+    }
     <!-- Likes and Comments -->
     <div class="blog-stats">
-      <span class="likes">Likes: {{ blogEntryOverview.likes }}</span>
-      <span class="comments">Comments: {{ blogEntryOverview.comments }}</span>
+      <span class="likes">Likes: {{ blog.likes }}</span>
+      <span class="comments">Comments: {{ commentsCount() }}</span>
     </div>
     <!-- User Actions and Status -->
     <div class="user-actions">
-      @if (!blogEntryOverview.likedByMe) {
+      @if (!blog.likedByMe) {
         <button (click)="onLikeClicked()" class="button">Like</button>
       }
-      @if (blogEntryOverview.likedByMe) {
+      @if (blog.likedByMe) {
         <button (click)="onUnlikeClicked()" class="button">Unlike</button>
       }
-      @if (blogEntryOverview.createdByMe) {
+      @if (blog.createdByMe) {
         <span class="created-by-me">You created this entry</span>
       }
       <!-- Author -->
-      <span class="author">Author: {{ blogEntryOverview.author }}</span>
+      <span class="author">Author: {{ blog.author }}</span>
     </div>
+    @if (!isOverview) {
+      <!-- Comment Section -->
+      <div class="comments-section">
+        <h3>Comments</h3>
+        @if (isBlogEntry(blog) && blog.comments?.length) {
+          <div>
+            @for (comment of blog.comments; track comment) {
+              <div class="comment">
+                <p>
+                  <strong>{{ comment.author }}</strong> -
+                  {{ comment.createdAt | date }}
+                </p>
+                <p>{{ comment.content }}</p>
+              </div>
+            }
+          </div>
+        } @else {
+          <p>No comments available.</p>
+        }
+
+        <!-- Add Comment -->
+        <div class="add-comment">
+          <textarea
+            [(ngModel)]="newCommentContent"
+            placeholder="Add a comment"
+          ></textarea>
+          <button (click)="submitComment()" class="button">Submit</button>
+        </div>
+      </div>
+    }
   </div>
 }

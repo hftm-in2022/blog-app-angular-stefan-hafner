@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { BlogEntry } from '../../core/interfaces/blog-entry';
+import { BlogEntry, BlogEntryOverview } from '../../core/model/blog-entry';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { BlogCardComponent } from '../../shared/blog-card/blog-card.component';
 
 @Component({
   selector: 'app-blog-detail-page',
   standalone: true,
-  imports: [DatePipe, FormsModule],
+  imports: [DatePipe, FormsModule, BlogCardComponent],
   templateUrl: './blog-detail-page.component.html',
   styleUrl: './blog-detail-page.component.scss',
 })
 export class BlogDetailPageComponent implements OnInit {
   blogEntry!: BlogEntry;
-  newCommentContent = '';
 
   constructor(private route: ActivatedRoute) {}
 
@@ -24,17 +24,29 @@ export class BlogDetailPageComponent implements OnInit {
     console.log(this.blogEntry.comments);
   }
 
-  addComment() {
-    console.log('Adding comment');
+  handleLike(blog: BlogEntryOverview | BlogEntry) {
+    /* Error 401 (Unauthorized) when calling the backend
+    this.blogBackendService.likeBlogEntry(blog.id).subscribe(() => {
+      blog.likedByMe = true;
+      blog.likes++;
+    });
+    */
+    blog.likedByMe = true;
+    blog.likes++;
   }
 
-  onLikeClicked() {
-    this.blogEntry.likedByMe = true;
-    this.blogEntry.likes++;
+  handleUnlike(blog: BlogEntryOverview | BlogEntry) {
+    /* Error 401 (Unauthorized) when calling the backend
+    this.blogBackendService.unlikeBlogEntry(blog.id).subscribe(() => {
+     blog.likedByMe = false;
+     blog.likes--;
+    });
+     */
+    blog.likedByMe = false;
+    blog.likes--;
   }
 
-  onUnlikeClicked() {
-    this.blogEntry.likedByMe = false;
-    this.blogEntry.likes--;
+  handleAddComment(blogEntry: string) {
+    console.log(blogEntry);
   }
 }

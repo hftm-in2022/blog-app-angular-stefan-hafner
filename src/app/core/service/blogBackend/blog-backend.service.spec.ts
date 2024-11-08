@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { BlogBackendService } from './blog-backend.service';
 import { of, throwError } from 'rxjs';
-import { BlogEntryOverviewResponse } from '../../interfaces/blog-entry-overview';
+import { BlogEntryOverviewResponse } from '../../model/blog-entry';
 
 describe('BlogBackendService', () => {
   let service: BlogBackendService;

@@ -1,6 +1,6 @@
 import { ResolveFn } from '@angular/router';
 import { inject } from '@angular/core';
-import { BlogEntry } from '../../core/interfaces/blog-entry';
+import { BlogEntry } from '../../core/model/blog-entry';
 import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.service';
 
 export const blogDetailResolver: ResolveFn<BlogEntry> = (route) => {

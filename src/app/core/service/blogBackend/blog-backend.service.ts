@@ -5,9 +5,9 @@ import { catchError, map, Observable, of, tap } from 'rxjs';
 import {
   BlogEntryOverview,
   BlogEntryOverviewResponse,
-} from '../../interfaces/blog-entry-overview';
+} from '../../model/blog-entry';
 import { environment } from '../../../../environments/environment';
-import { BlogEntry } from '../../interfaces/blog-entry';
+import { BlogEntry } from '../../model/blog-entry';
 
 @Injectable({
   providedIn: 'root',
@@ -52,6 +52,48 @@ export class BlogBackendService {
         catchError((error) => {
           console.error('Error fetching blog detail:', error);
           return of({} as BlogEntry);
+        }),
+      );
+  }
+
+  likeBlogEntry(id: number): Observable<void> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    console.log('Liking blog entry...');
+
+    return this.http
+      .put<void>(
+        `${environment.backendUrl}/entries/${id}/like-info`,
+        { likedByMe: true }, // JSON body
+        { headers },
+      )
+      .pipe(
+        tap(() => console.log('Liked blog entry')),
+        catchError((error) => {
+          console.error('Error liking blog entry:', error);
+          return of();
+        }),
+      );
+  }
+
+  unlikeBlogEntry(id: number): Observable<void> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    console.log('Unliking blog entry...');
+
+    return this.http
+      .put<void>(
+        `${environment.backendUrl}/entries/${id}/like-info`,
+        { likedByMe: false }, // JSON body
+        { headers },
+      )
+      .pipe(
+        tap(() => console.log('Unliked blog entry')),
+        catchError((error) => {
+          console.error('Error unliking blog entry:', error);
+          return of();
         }),
       );
   }
