@@ -27,8 +27,7 @@
       img {
         width: 100%;
         height: auto;
-        border-top-left-radius: 0.5rem;
-        border-top-right-radius: 0.5rem;
+        border-radius: 0.5rem;
         transition:
           transform 0.3s ease,
           opacity 0.3s ease; // Smooth transition for hover effects
@@ -42,45 +41,25 @@
       cursor: pointer;
     }
 
-    .button {
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 0.25rem;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+    .title-group {
+      display: flex; // Enables Flexbox for horizontal layout
+      align-items: center; // Centers items vertically
+      justify-content: center; // Centers the title by default
+    }
 
-      &:hover {
-        background-color: #0056b3;
-      }
+    mat-card-title {
+      flex: 1;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.5rem;
     }
 
     .goToDeatilsPage-button {
       margin-left: auto; // Moves the button to the right
     }
 
-    .blog-title {
-      display: flex; // Enables Flexbox for horizontal layout
-      align-items: center; // Centers items vertically
-      justify-content: center; // Centers the title by default
-
-      font-size: 1.25rem;
-      font-weight: bold;
+    mat-card-content {
       margin: 0.5rem;
-      color: #333;
-      text-align: center;
-    }
-
-    .title {
-      flex: 1; // Takes up remaining space between start and button
-      text-align: center; // Centers the title within its flex area
-    }
-
-    .blog-content-preview {
-      font-size: 1rem;
-      margin: 0.5rem;
-      color: #555;
     }
 
     .blog-stats {
@@ -103,7 +82,6 @@
       margin: 0.5rem;
 
       .created-by-me {
-        font-size: 0.875rem;
         color: #28a745;
         font-weight: bold;
       }
@@ -123,27 +101,17 @@
       }
     }
   }
-
-  .blog-content {
-    font-size: 1rem;
-    margin: 0.5rem;
-    color: #555;
-  }
-
   .comments-section {
-    margin-top: 1rem;
-
-    h3 {
-      font-size: 1.25rem;
-      margin-bottom: 0.5rem;
-      color: #333;
-    }
+    margin-top: 2rem;
+    padding: 0.5rem;
 
     .comment {
+      width: fit-content;
+      max-width: 75%;
       border-top: 1px solid #ddd;
-      padding: 0.5rem 0;
       font-size: 0.9rem;
       color: #555;
+      margin-bottom: 1rem;
 
       p {
         margin: 0;
@@ -153,8 +121,21 @@
     .add-comment {
       display: flex;
       flex-direction: column;
-      margin-top: 1rem;
+      margin-top: 5px;
 
+      .card-action {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+
+        .left-button {
+          margin-right: auto;
+        }
+
+        .right-button {
+          margin-left: auto;
+        }
+      }
       textarea {
         resize: vertical;
         padding: 0.5rem;

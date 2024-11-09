@@ -1,8 +1,8 @@
 @if (blog) {
-  <div class="blog-card" #container>
+  <mat-card class="blog-card" #container>
     <!-- Header Section with Image -->
     @if (blog.headerImageUrl) {
-      <div class="header" [ngClass]="{ overview: isOverview }">
+      <mat-card-header class="header" [ngClass]="{ overview: isOverview }">
         @if (isOverview) {
           <img
             [src]="blog.headerImageUrl"
@@ -19,17 +19,23 @@
             class="header-image"
           />
         }
-      </div>
-      <div class="blog-title">
-        <span class="title">{{ blog.title }}</span>
+      </mat-card-header>
+      <div class="title-group">
+        <mat-card-title>{{ blog.title }}</mat-card-title>
       </div>
     } @else {
       <!-- Blog Title -->
-      <div class="blog-title">
-        <span class="title">{{ blog.title }}</span>
+      <div class="title-group">
+        <mat-card-title>{{ blog.title }}</mat-card-title>
         @if (isOverview) {
           <span class="goToDetailsPage-button">
-            <button (click)="goToDetailsPage()" class="button">Details</button>
+            <button
+              mat-raised-button
+              (click)="goToDetailsPage()"
+              class="button"
+            >
+              Details
+            </button>
           </span>
         }
       </div>
@@ -37,13 +43,13 @@
 
     <!-- Blog Content Preview -->
     @if (!isBlogEntry(blog) && isOverview) {
-      <div class="blog-content-preview">
+      <mat-card-content>
         {{ blog.contentPreview }}
-      </div>
+      </mat-card-content>
     } @else if (isBlogEntry(blog)) {
-      <div class="blog-content">
+      <mat-card-content>
         {{ blog.content }}
-      </div>
+      </mat-card-content>
     }
     <!-- Likes and Comments -->
     <div class="blog-stats">
@@ -53,31 +59,37 @@
     <!-- User Actions and Status -->
     <div class="user-actions">
       @if (!blog.likedByMe) {
-        <button (click)="onLikeClicked()" class="button">Like</button>
+        <button mat-raised-button (click)="onLikeClicked()" class="button">
+          Like
+        </button>
       }
       @if (blog.likedByMe) {
-        <button (click)="onUnlikeClicked()" class="button">Unlike</button>
+        <button mat-raised-button (click)="onUnlikeClicked()" class="button">
+          Unlike
+        </button>
       }
       @if (blog.createdByMe) {
-        <span class="created-by-me">You created this entry</span>
+        <mat-card-content>You created this entry</mat-card-content>
       }
       <!-- Author -->
-      <span class="author">Author: {{ blog.author }}</span>
+      <mat-card-content class="author"
+        >Author: {{ blog.author }}</mat-card-content
+      >
     </div>
     @if (!isOverview) {
       <!-- Comment Section -->
       <div class="comments-section">
-        <h3>Comments</h3>
+        <h5 mat-subheader>Comments</h5>
         @if (isBlogEntry(blog) && blog.comments?.length) {
           <div>
             @for (comment of blog.comments; track comment) {
-              <div class="comment">
-                <p>
+              <mat-card class="comment">
+                <mat-card-header>
                   <strong>{{ comment.author }}</strong> -
                   {{ comment.createdAt | date }}
-                </p>
-                <p>{{ comment.content }}</p>
-              </div>
+                </mat-card-header>
+                <mat-card-content>{{ comment.content }}</mat-card-content>
+              </mat-card>
             }
           </div>
         } @else {
@@ -86,13 +98,35 @@
 
         <!-- Add Comment -->
         <div class="add-comment">
-          <textarea
-            [(ngModel)]="newCommentContent"
-            placeholder="Add a comment"
-          ></textarea>
-          <button (click)="submitComment()" class="button">Submit</button>
+          <mat-form-field>
+            <mat-label>Leave a comment</mat-label>
+            <textarea
+              matInput
+              #message
+              [(ngModel)]="newCommentContent"
+            ></textarea>
+            <mat-hint align="end">{{ message.value.length }}</mat-hint>
+          </mat-form-field>
+          <mat-card-actions class="card-action">
+            <button
+              mat-raised-button
+              class="left-button"
+              (click)="onBack()"
+              class="button"
+            >
+              Back
+            </button>
+            <button
+              mat-raised-button
+              class="right-button"
+              (click)="submitComment()"
+              class="button"
+            >
+              Submit
+            </button>
+          </mat-card-actions>
         </div>
       </div>
     }
-  </div>
+  </mat-card>
 }

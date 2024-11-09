@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { BlogEntry, BlogEntryOverview } from '../../core/model/blog-entry';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BlogCardComponent } from '../../shared/blog-card/blog-card.component';
+import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.service';
 
 @Component({
   selector: 'app-blog-detail-page',
@@ -15,22 +17,26 @@ import { BlogCardComponent } from '../../shared/blog-card/blog-card.component';
 export class BlogDetailPageComponent implements OnInit {
   blogEntry!: BlogEntry;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private blogBackendService: BlogBackendService,
+    private location: Location,
+  ) {}
 
   ngOnInit(): void {
     // Access to the data loaded by the resolver
     this.blogEntry = this.route.snapshot.data['blog'];
     this.blogEntry.comments = this.blogEntry.comments || [];
-    console.log(this.blogEntry.comments);
   }
 
   handleLike(blog: BlogEntryOverview | BlogEntry) {
-    /* Error 401 (Unauthorized) when calling the backend
+    // Error 401 (Unauthorized) when calling the backend
     this.blogBackendService.likeBlogEntry(blog.id).subscribe(() => {
       blog.likedByMe = true;
       blog.likes++;
     });
-    */
+
     blog.likedByMe = true;
     blog.likes++;
   }
@@ -48,5 +54,13 @@ export class BlogDetailPageComponent implements OnInit {
 
   handleAddComment(blogEntry: string) {
     console.log(blogEntry);
+  }
+
+  handleBackButton() {
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/default-route']);
+    }
   }
 }

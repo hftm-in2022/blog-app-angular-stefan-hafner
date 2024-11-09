@@ -1,6 +1,11 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { DatePipe, NgClass } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 export interface BaseBlogEntry {
   id: number;
@@ -39,11 +44,21 @@ export interface NewComment {
 @Component({
   selector: 'app-blog-card',
   standalone: true,
-  imports: [DatePipe, NgClass, ReactiveFormsModule, FormsModule],
+  imports: [
+    DatePipe,
+    NgClass,
+    ReactiveFormsModule,
+    FormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatListModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   templateUrl: './blog-card.component.html',
   styleUrl: './blog-card.component.scss',
 })
-export class BlogCardComponent implements OnInit {
+export class BlogCardComponent {
   @Input({ required: true }) blog!: BlogEntryOverview | BlogEntry;
   @Input({ required: true }) isOverview = true;
   @Input() cardIndex?: number;
@@ -51,11 +66,10 @@ export class BlogCardComponent implements OnInit {
   @Output() unlike = new EventEmitter<BlogEntryOverview | BlogEntry>(); /// Emit whole blog object for unlike
   @Output() addComment = new EventEmitter<string>(); // Emit comment content
   @Output() navigateToDetails = new EventEmitter<number>(); // Emit navigation event
+  @Output() backButton = new EventEmitter<void>(); // Emit back button event
+
   newCommentContent = '';
 
-  ngOnInit() {
-    console.log('BlogCardComponent initialized index: ' + this.cardIndex);
-  }
   // Type guard to check if blogEntry is of type BlogEntry
   isBlogEntry(entry: BlogEntryOverview | BlogEntry): entry is BlogEntry {
     return (entry as BlogEntry).content !== undefined;
@@ -84,5 +98,9 @@ export class BlogCardComponent implements OnInit {
 
   goToDetailsPage() {
     this.navigateToDetails.emit(this.blog.id); // Emit the navigation event
+  }
+
+  onBack() {
+    this.backButton.emit(); // Emit the back button event
   }
 }
