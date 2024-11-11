@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { BlogOverviewPageComponent } from './blog-overview-page.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing'; // Import HttpClientTestingModule
+import { RouterTestingModule } from '@angular/router/testing'; // Optional, falls Router benötigt wird
 
 describe('BlogOverviewPageComponent', () => {
   let component: BlogOverviewPageComponent;
@@ -8,7 +9,11 @@ describe('BlogOverviewPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BlogOverviewPageComponent],
+      imports: [
+        HttpClientTestingModule, // Hinzufügen von HttpClientTestingModule
+        RouterTestingModule, // Optional falls Routing genutzt wird
+        BlogOverviewPageComponent,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BlogOverviewPageComponent);

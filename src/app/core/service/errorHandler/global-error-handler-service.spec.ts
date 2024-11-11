@@ -6,10 +6,11 @@ describe('GlobalErrorHandlerServicee', () => {
   let service: GlobalErrorHandlerService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [GlobalErrorHandlerService], // Ensure the service is provided
+    });
     service = TestBed.inject(GlobalErrorHandlerService);
   });
-
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
