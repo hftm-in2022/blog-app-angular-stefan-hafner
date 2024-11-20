@@ -4,7 +4,6 @@ import { BlogEntryOverview } from '../../core/interfaces/blog-entry-overview';
 
 @Component({
   selector: 'app-blog-card',
-  standalone: true,
   imports: [DatePipe, CommonModule],
   templateUrl: './blog-card.component.html',
   styleUrl: './blog-card.component.scss',

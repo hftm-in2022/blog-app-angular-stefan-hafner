@@ -8,7 +8,6 @@ import { BlogBackendService } from './core/service/blogBackend/blog-backend.serv
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [RouterOutlet, AsyncPipe, BlogCardComponent, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
