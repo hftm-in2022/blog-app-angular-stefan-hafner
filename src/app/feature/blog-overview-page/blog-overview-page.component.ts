@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { BlogEntry, BlogEntryOverview } from '../../core/model/blog-entry';
-import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.service';
 import { AsyncPipe } from '@angular/common';
 import { Location } from '@angular/common';
 import { BlogCardComponent } from '../../shared/blog-card/blog-card.component';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-blog-overview-page',
@@ -15,17 +13,16 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './blog-overview-page.component.scss',
 })
 export class BlogOverviewPageComponent implements OnInit {
-  blogOverview$!: Observable<BlogEntryOverview[]>;
+  blogOverview!: BlogEntryOverview[];
 
   constructor(
-    private blogBackendService: BlogBackendService,
+    private route: ActivatedRoute,
     private router: Router,
     private location: Location,
   ) {}
 
   ngOnInit() {
-    console.log('Initializing blogOverview$...');
-    this.blogOverview$ = this.blogBackendService.getBlogEntryOverview();
+    this.blogOverview = this.route.snapshot.data['blog'];
   }
 
   handleNavigationToDetails(blogId: number) {

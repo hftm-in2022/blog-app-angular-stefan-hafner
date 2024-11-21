@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BlogEntry, BlogEntryOverview } from '../../core/model/blog-entry';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
@@ -16,11 +16,11 @@ import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.
 })
 export class BlogDetailPageComponent implements OnInit {
   blogEntry!: BlogEntry;
+  blogBackendService = inject(BlogBackendService);
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private blogBackendService: BlogBackendService,
     private location: Location,
   ) {}
 
