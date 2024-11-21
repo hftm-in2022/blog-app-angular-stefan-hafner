@@ -80,7 +80,7 @@
       <!-- Comment Section -->
       <div class="comments-section">
         <h5 mat-subheader>Comments</h5>
-        @if (isBlogEntry(blog) && blog.comments?.length) {
+        @if (isBlogEntry(blog) && blog.comments.length) {
           <div>
             @for (comment of blog.comments; track comment) {
               <mat-card class="comment">

@@ -21,7 +21,7 @@ export class BlogBackendService {
     });
 
     const params = new HttpParams().set('page', '1').set('pageSize', '10');
-
+    console.log('Fetching blog entries...');
     return this.http
       .get<BlogEntryOverviewResponse>(`${environment.backendUrl}/entries`, {
         params,

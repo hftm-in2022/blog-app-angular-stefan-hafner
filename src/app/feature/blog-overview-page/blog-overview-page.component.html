@@ -1,6 +1,6 @@
 <!-- Blog Overview -->
 <div class="blog-overview">
-  @for (entry of blogOverview$ | async; let i = $index; track entry) {
+  @for (entry of blogOverview; let i = $index; track entry.id) {
     <app-blog-card
       [blog]="entry"
       [cardIndex]="i"

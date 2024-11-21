@@ -18,12 +18,6 @@ export const loggingInterceptor: HttpInterceptorFn = (req, next) => {
         });
       },
       error: (error) => {
-        console.error('HTTP Request error:', {
-          url: req.url,
-          status: error.status,
-          message: error.message,
-        });
-
         return throwError(() => error);
       },
     }),

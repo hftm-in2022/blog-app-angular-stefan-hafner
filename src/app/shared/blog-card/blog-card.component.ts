@@ -17,17 +17,17 @@ export interface BaseBlogEntry {
   headerImageUrl: string;
 }
 
-export interface BlogEntryOverview extends BaseBlogEntry {
+export type BlogEntryOverview = BaseBlogEntry & {
   updatedAt: string;
   createdAt: string;
   contentPreview: string;
   comments: number;
-}
+};
 
-export interface BlogEntry extends BaseBlogEntry {
+export type BlogEntry = BaseBlogEntry & {
   content: string;
   comments: Comment[];
-}
+};
 
 export interface Comment {
   id: number;

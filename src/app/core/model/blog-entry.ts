@@ -9,17 +9,17 @@ export interface BaseBlogEntry {
   createdByMe: boolean;
   headerImageUrl: string;
 }
-export interface BlogEntry extends BaseBlogEntry {
+export type BlogEntry = BaseBlogEntry & {
   content: string;
   comments: Comment[];
-}
+};
 
-export interface BlogEntryOverview extends BaseBlogEntry {
+export type BlogEntryOverview = BaseBlogEntry & {
   updatedAt: string;
   createdAt: string;
   contentPreview: string;
   comments: number;
-}
+};
 
 export interface BlogEntryOverviewResponse {
   data: BlogEntryOverview[];
