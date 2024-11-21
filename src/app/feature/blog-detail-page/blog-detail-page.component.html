@@ -1,0 +1,8 @@
+<app-blog-card
+  [blog]="blogEntry"
+  [isOverview]="false"
+  (like)="handleLike($event)"
+  (unlike)="handleUnlike($event)"
+  (addComment)="handleAddComment($event)"
+  (backButton)="handleBackButton()"
+></app-blog-card>

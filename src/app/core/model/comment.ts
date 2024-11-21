@@ -5,3 +5,7 @@ export interface Comment {
   updatedAt: string;
   createdAt: string;
 }
+
+export interface NewComment {
+  content: string;
+}

@@ -1,0 +1,24 @@
+<!-- Blog Overview -->
+<div class="blog-overview">
+  @for (entry of blogOverview; let i = $index; track entry.id) {
+    <app-blog-card
+      [blog]="entry"
+      [cardIndex]="i"
+      [isOverview]="true"
+      (like)="handleLike($event)"
+      (unlike)="handleUnlike($event)"
+      (navigateToDetails)="handleNavigationToDetails($event)"
+    >
+      <a [routerLink]="['/blog-detail', entry.id]">
+        <!-- Link to the blog detail page -->
+        @if (entry.headerImageUrl) {
+          <img
+            class="header-image"
+            [src]="entry.headerImageUrl"
+            alt="Header Image"
+          />
+        }
+      </a>
+    </app-blog-card>
+  }
+</div>
