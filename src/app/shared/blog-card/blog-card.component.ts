@@ -1,11 +1,21 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { DatePipe, NgClass } from '@angular/common';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
+import { DatePipe, Location, NgClass } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+
+import { ActivatedRoute, Router } from '@angular/router';
+import { StateService } from '../../core/service/state.service';
 
 export interface BaseBlogEntry {
   id: number;
@@ -57,8 +67,12 @@ export interface NewComment {
   ],
   templateUrl: './blog-card.component.html',
   styleUrl: './blog-card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlogCardComponent {
+  //cardIndex = input<number>;
+  //isOverview = input.required<boolean>();
+
   @Input({ required: true }) blog!: BlogEntryOverview | BlogEntry;
   @Input({ required: true }) isOverview = true;
   @Input() cardIndex?: number;
@@ -67,6 +81,11 @@ export class BlogCardComponent {
   @Output() addComment = new EventEmitter<string>(); // Emit comment content
   @Output() navigateToDetails = new EventEmitter<number>(); // Emit navigation event
   @Output() backButton = new EventEmitter<void>(); // Emit back button event
+
+  activatedRoute = inject(ActivatedRoute);
+  router = inject(Router);
+  location = inject(Location);
+  stateService = inject(StateService);
 
   newCommentContent = '';
 

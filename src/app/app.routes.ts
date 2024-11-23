@@ -10,7 +10,8 @@ export const routes: Routes = [
       import('./feature/blog-overview-page/blog-overview-page.component').then(
         (m) => m.BlogOverviewPageComponent,
       ),
-    resolve: { blog: blogOverviewResolver },
+    resolve: { blog: blogOverviewResolver }, // { blog: blogOverviewResolver },
+    runGuardsAndResolvers: 'always', // Always run the resolver when navigating to this route
   },
   {
     path: 'blog-detail/:id', // Route for the blog detail page, expects an ID as parameter
