@@ -1,8 +1,14 @@
-<app-blog-card
-  [blog]="blogEntry"
-  [isOverview]="false"
-  (like)="handleLike($event)"
-  (unlike)="handleUnlike($event)"
-  (addComment)="handleAddComment($event)"
-  (backButton)="handleBackButton()"
-></app-blog-card>
+<app-header [isOverview]="false"></app-header>
+
+@if (loading()) {
+  <mat-spinner></mat-spinner>
+} @else {
+  <app-blog-card
+    [blog]="blogEntry"
+    [isOverview]="false"
+    (like)="handleLike($event)"
+    (unlike)="handleUnlike($event)"
+    (addComment)="handleAddComment($event)"
+    (backButton)="handleBackButton()"
+  ></app-blog-card>
+}

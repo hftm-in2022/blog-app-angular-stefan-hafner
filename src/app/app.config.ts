@@ -3,7 +3,7 @@ import {
   ErrorHandler,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { BlogBackendService } from './core/service/blogBackend/blog-backend.service';
@@ -16,12 +16,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(),
     provideHttpClient(withInterceptors([loggingInterceptor])),
     BlogBackendService,
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
     provideAnimations(),
+    provideAnimationsAsync(),
     provideAnimationsAsync(),
   ],
 };

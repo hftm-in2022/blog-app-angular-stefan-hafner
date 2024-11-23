@@ -1,3 +1,11 @@
+mat-spinner {
+  position: fixed; /* Spinner bleibt unabhängig vom Scrollen */
+  top: 50%; /* Vertikale Mitte */
+  left: 50%; /* Horizontale Mitte */
+  transform: translate(-50%, -50%); /* Perfekte Zentrierung */
+  z-index: 1000; /* Über allen anderen Elementen */
+}
+
 .top-menu {
   background: #1976d2;
   padding: 2px 15px;
