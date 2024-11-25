@@ -1,13 +1,14 @@
-name: Azure Static Web Apps CI/CD
+  name: Azure Static Web Apps CI/CD
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - main
+  on:
+    push:
+      branches:
+        - main
+    pull_request:
+      types: [opened, synchronize, reopened, closed]
+      branches:
+        - main
+    workflow_dispatch:
 
   jobs:
     codeQL:
@@ -29,6 +30,7 @@ on:
             node-version: ${{ matrix.node-version }}
             cache: 'npm'
             cache-dependency-path: package-lock.json
+
         - name: npm install, build, and test
           run: |
             npm ci
@@ -48,7 +50,7 @@ on:
 
     deploy:
       needs: build
-      if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
+      if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
       runs-on: ubuntu-latest
       name: Deploy Job
       steps:
@@ -71,13 +73,13 @@ on:
             output_location: "dist/blog-app/browser" # Built app content directory - optional
             ###### End of Repository/Build Configurations ######
 
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    name: Close Pull Request Job
-    steps:
-      - name: Close Pull Request
-        id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          action: "close"
+    close_pull_request_job:
+      if: github.event_name == 'pull_request' && github.event.action == 'closed'
+      runs-on: ubuntu-latest
+      name: Close Pull Request Job
+      steps:
+        - name: Close Pull Request
+          id: closepullrequest
+          uses: Azure/static-web-apps-deploy@v1
+          with:
+            action: "close"
