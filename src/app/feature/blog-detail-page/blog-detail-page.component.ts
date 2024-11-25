@@ -73,8 +73,7 @@ export class BlogDetailPageComponent implements OnInit {
     if (window.history.length > 1) {
       this.location.back();
     } else {
-      this.stateService.rxGetBlogs();
-      // this.router.navigate(['/default-route']);
+      this.router.navigate(['/default-route']);
     }
   }
 }

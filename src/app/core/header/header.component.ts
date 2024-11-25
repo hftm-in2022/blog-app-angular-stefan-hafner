@@ -48,9 +48,6 @@ export class HeaderComponent {
       .pipe(distinctUntilChanged())
       .subscribe((params) => {
         this.searchString.set(params.get('searchString') || '');
-        this.stateService.rxGetBlogs({
-          searchString: this.searchString(),
-        });
       });
 
     effect(() => {

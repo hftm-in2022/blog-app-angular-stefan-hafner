@@ -7,7 +7,11 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { BlogBackendService } from './core/service/blogBackend/blog-backend.service';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
 import { loggingInterceptor } from './core/interceptors/logging-interceptor';
 import { GlobalErrorHandlerService } from './core/service/errorHandler/global-error-handler-service';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -18,7 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(),
-    provideHttpClient(withInterceptors([loggingInterceptor])),
+    provideHttpClient(withInterceptors([loggingInterceptor]), withFetch()),
     BlogBackendService,
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
     provideAnimations(),

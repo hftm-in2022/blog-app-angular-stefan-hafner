@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { BlogEntry, BlogEntryOverview } from '../../core/model/blog-entry';
 import { AsyncPipe, Location } from '@angular/common';
 import { BlogCardComponent } from '../../shared/blog-card/blog-card.component';
@@ -20,8 +20,9 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   ],
   templateUrl: './blog-overview-page.component.html',
   styleUrl: './blog-overview-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BlogOverviewPageComponent implements OnInit {
+export class BlogOverviewPageComponent {
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
   location = inject(Location);
@@ -32,8 +33,8 @@ export class BlogOverviewPageComponent implements OnInit {
   blogOverview$ = this.activatedRoute.data.pipe(map((data) => data['blog']));
 
   handleNavigationToDetails(blogId: number) {
-    this.stateService.rxGetBlogDetail(blogId);
-    // this.router.navigate(['/blog-detail', blogId]);
+    //this.stateService.rxGetBlogDetail(blogId);
+    this.router.navigate(['/blog-detail', blogId]);
   }
 
   handleLike(blog: BlogEntryOverview | BlogEntry) {
