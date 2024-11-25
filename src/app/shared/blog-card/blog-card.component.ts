@@ -72,7 +72,6 @@ export interface NewComment {
 export class BlogCardComponent {
   //cardIndex = input<number>;
   //isOverview = input.required<boolean>();
-
   @Input({ required: true }) blog!: BlogEntryOverview | BlogEntry;
   @Input({ required: true }) isOverview = true;
   @Input() cardIndex?: number;

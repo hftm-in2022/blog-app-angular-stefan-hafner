@@ -1,6 +1,6 @@
 // app.component.spec.ts oder die Testdatei für AppComponent
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { BlogBackendService } from './core/service/blogBackend/blog-backend.service'; // Beispielhaft
 
@@ -11,7 +11,7 @@ describe('AppComponent', () => {
         // Weitere Module oder Standalone-Imports, falls notwendig
       ],
       providers: [
-        provideHttpClient(), // HttpClient bereitstellen
+        provideHttpClient(withFetch()), // HttpClient bereitstellen
         BlogBackendService, // Falls der Service auch direkt benötigt wird
       ],
     }).compileComponents();

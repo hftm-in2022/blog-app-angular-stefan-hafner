@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { delay, map, Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import {
   BlogEntryOverview,
@@ -33,7 +33,7 @@ export class BlogBackendService {
         headers,
       })
       .pipe(
-        delay(Math.floor(Math.random() * 1000)), // Verzögerung zwischen 0 und 1000 ms
+        // delay(Math.floor(Math.random() * 1000)), // Zum Testen des Loading Spinners Verzögerung zwischen 0 und 1000 ms
         map((response) => response.data),
       );
   }
@@ -47,9 +47,9 @@ export class BlogBackendService {
       .get<BlogEntry>(`${environment.backendUrl}/entries/${id}`, {
         headers,
       })
-      .pipe(
-        delay(Math.floor(Math.random() * 1000)), // Verzögerung zwischen 0 und 1000 ms);
-      );
+      .pipe
+      //delay(Math.floor(Math.random() * 1000)),  // Zum Testen des Loading Spinners Verzögerung zwischen 0 und 1000 ms
+      ();
   }
 
   likeBlogEntry(id: number): Observable<void> {
