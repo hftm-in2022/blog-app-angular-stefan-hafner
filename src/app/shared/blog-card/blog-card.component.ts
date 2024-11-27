@@ -43,7 +43,6 @@ export interface NewComment {
 
 @Component({
   selector: 'app-blog-card',
-  standalone: true,
   imports: [
     DatePipe,
     NgClass,

@@ -9,7 +9,6 @@ import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.
 
 @Component({
   selector: 'app-blog-detail-page',
-  standalone: true,
   imports: [DatePipe, FormsModule, BlogCardComponent],
   templateUrl: './blog-detail-page.component.html',
   styleUrl: './blog-detail-page.component.scss',
