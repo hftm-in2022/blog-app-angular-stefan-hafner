@@ -6,7 +6,6 @@ import { BlogOverviewPageComponent } from './feature/blog-overview-page/blog-ove
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
     RouterOutlet,
     RouterModule,
