@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { BlogEntry, BlogEntryOverview } from '../../core/model/blog-entry';
-import { AsyncPipe, Location } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { BlogCardComponent } from '../../shared/blog-card/blog-card.component';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../core/header/header.component';
@@ -25,7 +25,6 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 export class BlogOverviewPageComponent {
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
-  location = inject(Location);
 
   stateService = inject(StateService);
   loading = this.stateService.loading;
