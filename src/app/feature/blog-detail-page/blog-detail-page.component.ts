@@ -6,16 +6,30 @@ import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BlogCardComponent } from '../../shared/blog-card/blog-card.component';
 import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.service';
+import { HeaderComponent } from '../../core/header/header.component';
+import { StateService } from '../../core/service/state.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-blog-detail-page',
-  imports: [DatePipe, FormsModule, BlogCardComponent],
+  standalone: true,
+  imports: [
+    DatePipe,
+    FormsModule,
+    BlogCardComponent,
+    HeaderComponent,
+    MatProgressSpinner,
+  ],
   templateUrl: './blog-detail-page.component.html',
   styleUrl: './blog-detail-page.component.scss',
 })
 export class BlogDetailPageComponent implements OnInit {
   blogEntry!: BlogEntry;
   blogBackendService = inject(BlogBackendService);
+
+  stateService = inject(StateService);
+  loading = this.stateService.loading;
+  private searchString = '';
 
   constructor(
     private route: ActivatedRoute,

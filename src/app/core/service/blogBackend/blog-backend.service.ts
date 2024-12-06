@@ -15,19 +15,27 @@ import { BlogEntry } from '../../model/blog-entry';
 export class BlogBackendService {
   constructor(private http: HttpClient) {}
 
-  getBlogEntryOverview(): Observable<BlogEntryOverview[]> {
+  getBlogEntryOverview(searchString?: string): Observable<BlogEntryOverview[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
+    let params = new HttpParams().set('page', '1').set('pageSize', '10');
 
-    const params = new HttpParams().set('page', '1').set('pageSize', '10');
-    console.log('Fetching blog entries...');
+    if (searchString) {
+      params = params.set('searchstring', searchString);
+    }
+    console.log('Fetching blog entries with search string:', searchString);
+    const debugUrl = `${environment.backendUrl}/entries?${params.toString()}`;
+    console.log('Generated URL:', debugUrl);
     return this.http
       .get<BlogEntryOverviewResponse>(`${environment.backendUrl}/entries`, {
         params,
         headers,
       })
-      .pipe(map((response) => response.data));
+      .pipe(
+        // delay(Math.floor(Math.random() * 1000)), // Zum Testen des Loading Spinners Verzögerung zwischen 0 und 1000 ms
+        map((response) => response.data),
+      );
   }
 
   getBlogDetail(id: number): Observable<BlogEntry> {
@@ -35,9 +43,13 @@ export class BlogBackendService {
       'Content-Type': 'application/json',
     });
     console.log('Fetching blog detail...');
-    return this.http.get<BlogEntry>(`${environment.backendUrl}/entries/${id}`, {
-      headers,
-    });
+    return this.http
+      .get<BlogEntry>(`${environment.backendUrl}/entries/${id}`, {
+        headers,
+      })
+      .pipe
+      //delay(Math.floor(Math.random() * 1000)),  // Zum Testen des Loading Spinners Verzögerung zwischen 0 und 1000 ms
+      ();
   }
 
   likeBlogEntry(id: number): Observable<void> {

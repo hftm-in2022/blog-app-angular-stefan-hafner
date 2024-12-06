@@ -1,9 +1,11 @@
 import { ResolveFn } from '@angular/router';
 import { inject } from '@angular/core';
 import { BlogEntryOverview } from '../../core/model/blog-entry';
-import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.service';
+import { StateService } from '../../core/service/state.service';
 
-export const blogOverviewResolver: ResolveFn<BlogEntryOverview[]> = () => {
-  const blogBackendService = inject(BlogBackendService);
-  return blogBackendService.getBlogEntryOverview();
+export const blogOverviewResolver: ResolveFn<BlogEntryOverview[]> = (route) => {
+  const queryParams = route?.queryParams;
+  const searchString = queryParams['searchString'];
+  const stateService = inject(StateService);
+  return stateService.rxGetBlogs({ searchString: searchString });
 };

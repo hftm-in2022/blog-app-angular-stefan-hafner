@@ -21,6 +21,8 @@ export type BlogEntryOverview = BaseBlogEntry & {
   comments: number;
 };
 
+export type BlogEntryType = BlogEntry | BlogEntryOverview;
+
 export interface BlogEntryOverviewResponse {
   data: BlogEntryOverview[];
   pageIndex: number;
