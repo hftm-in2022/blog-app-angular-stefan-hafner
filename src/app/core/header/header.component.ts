@@ -14,8 +14,9 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { distinctUntilChanged } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
 import { StateService } from '../service/state.service';
+import { AuthService } from '../service/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -29,6 +30,7 @@ import { StateService } from '../service/state.service';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
+    AsyncPipe,
   ],
   standalone: true,
 })
@@ -39,11 +41,16 @@ export class HeaderComponent {
   router = inject(Router);
   location = inject(Location);
   stateService = inject(StateService);
+  authService = inject(AuthService);
 
   searchString = model<string>('');
   loading = this.stateService.loading;
+  isAuth = this.authService.isAuthenticated$;
 
   constructor() {
+    this.isAuth.pipe(distinctUntilChanged()).subscribe((authStatus) => {
+      console.log('IsAuth: ', authStatus);
+    });
     this.activatedRoute.queryParamMap
       .pipe(distinctUntilChanged())
       .subscribe((params) => {
@@ -70,5 +77,14 @@ export class HeaderComponent {
         }
       }
     });
+  }
+  login() {
+    this.authService.login();
+    console.log('click on login');
+  }
+
+  logout() {
+    this.authService.logout();
+    console.log('click on logout');
   }
 }

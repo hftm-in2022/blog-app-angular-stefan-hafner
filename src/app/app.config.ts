@@ -16,6 +16,8 @@ import { loggingInterceptor } from './core/interceptors/logging-interceptor';
 import { GlobalErrorHandlerService } from './core/service/errorHandler/global-error-handler-service';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { authConfig } from './core/service/auth/auth.config';
+import { provideAuth } from 'angular-auth-oidc-client';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,5 +30,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideAnimationsAsync(),
     provideAnimationsAsync(),
+    provideAuth(authConfig),
   ],
 };
