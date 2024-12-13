@@ -19,7 +19,7 @@
 
   <span class="spacer"></span>
 
-  @if (isAuth | async) {
+  @if (isAuth$.getValue().isAuthenticated) {
     <button
       mat-icon-button
       class="example-icon logout-icon"

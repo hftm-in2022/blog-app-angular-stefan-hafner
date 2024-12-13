@@ -45,11 +45,11 @@ export class HeaderComponent {
 
   searchString = model<string>('');
   loading = this.stateService.loading;
-  isAuth = this.authService.isAuthenticated$;
+  isAuth$ = this.authService.getUser();
 
   constructor() {
-    this.isAuth.pipe(distinctUntilChanged()).subscribe((authStatus) => {
-      console.log('IsAuth: ', authStatus);
+    this.isAuth$.subscribe((value) => {
+      console.log('Auth-Status geändert:', value.isAuthenticated);
     });
     this.activatedRoute.queryParamMap
       .pipe(distinctUntilChanged())

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { BlogCardComponent } from './shared/blog-card/blog-card.component';
 import { BlogOverviewPageComponent } from './feature/blog-overview-page/blog-overview-page.component';
 import { HeaderComponent } from './core/header/header.component';
 import { AuthService } from './core/service/auth/auth.service';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-root',
@@ -23,15 +24,15 @@ import { AuthService } from './core/service/auth/auth.service';
 export class AppComponent implements OnInit {
   title = 'blog-app-angular';
 
-  constructor(private authService: AuthService) {}
+  private readonly oidcSecurityService = inject(OidcSecurityService);
+  private authService = inject(AuthService);
 
   ngOnInit() {
-    this.authService.loginResponse$.subscribe((response) => {
-      if (response.isAuthenticated) {
-        console.log('User is authenticated');
-      } else {
-        console.log('User is not authenticated');
-      }
-    });
+    this.oidcSecurityService
+      .checkAuth()
+      .subscribe(({ isAuthenticated, userData, accessToken }) => {
+        console.log('app authenticated', isAuthenticated);
+        this.authService.setUser(isAuthenticated, userData, accessToken);
+      });
   }
 }
