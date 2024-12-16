@@ -16,19 +16,35 @@
       </mat-form-field>
     </span>
   }
+
   <span class="spacer"></span>
-  <button
-    mat-icon-button
-    class="example-icon favorite-icon"
-    aria-label="Example icon-button with heart icon"
-  >
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button
-    mat-icon-button
-    class="example-icon"
-    aria-label="Example icon-button with share icon"
-  >
-    <mat-icon>share</mat-icon>
-  </button>
+
+  @if (isAuthenticated().isAuthenticated) {
+    <button
+      mat-button
+      class="add-blog"
+      aria-label="Create a new Blog button"
+      (click)="navigateToNewBlog()"
+    >
+      Create a new Blog
+    </button>
+
+    <button
+      mat-icon-button
+      class="example-icon logout-icon"
+      aria-label="Logout button"
+      (click)="logout()"
+    >
+      <mat-icon>logout</mat-icon>
+    </button>
+  } @else {
+    <button
+      mat-icon-button
+      class="example-icon login-icon"
+      aria-label="Login button"
+      (click)="login()"
+    >
+      <mat-icon>login</mat-icon>
+    </button>
+  }
 </mat-toolbar>

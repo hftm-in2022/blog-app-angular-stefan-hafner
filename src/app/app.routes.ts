@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 import { blogDetailResolver } from './feature/blog-detail-page/blog-detail-resolver';
 import { blogOverviewResolver } from './feature/blog-overview-page/blog-overview-resolver';
+import { isAuthenticatedGuard } from './core/service/auth/isAuthenticated.guard';
 
 export const routes: Routes = [
   {
@@ -20,6 +21,14 @@ export const routes: Routes = [
         (m) => m.BlogDetailPageComponent,
       ),
     resolve: { blog: blogDetailResolver }, // Applies the resolver to fetch blog details before loading the component
+  },
+  {
+    path: 'blog-add', // Route for the blog add page,
+    loadComponent: () =>
+      import('./feature/blog-add-page/blog-add-page.component').then(
+        (m) => m.BlogAddPageComponent,
+      ),
+    canActivate: [isAuthenticatedGuard],
   },
   {
     path: '**', // Fallback route for undefined paths, redirects to blog overview

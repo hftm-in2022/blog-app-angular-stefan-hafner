@@ -8,14 +8,16 @@ import {
 } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { distinctUntilChanged } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
 import { StateService } from '../service/state.service';
+import { AuthService } from '../service/auth/auth.service';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-header',
@@ -29,6 +31,8 @@ import { StateService } from '../service/state.service';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
+    AsyncPipe,
+    MatButton,
   ],
   standalone: true,
 })
@@ -39,9 +43,14 @@ export class HeaderComponent {
   router = inject(Router);
   location = inject(Location);
   stateService = inject(StateService);
+  authService = inject(AuthService);
+  readonly oidcSecurityService = inject(OidcSecurityService);
 
   searchString = model<string>('');
   loading = this.stateService.loading;
+
+  readonly isAuthenticated = this.oidcSecurityService.authenticated;
+  readonly userData = this.oidcSecurityService.userData;
 
   constructor() {
     this.activatedRoute.queryParamMap
@@ -70,5 +79,27 @@ export class HeaderComponent {
         }
       }
     });
+    effect(() => {
+      console.log(
+        'Authentication state changed:',
+        this.isAuthenticated().isAuthenticated,
+      );
+    });
+    effect(() => {
+      console.log('userDate state changed:', this.userData().userData);
+    });
+  }
+  login() {
+    this.authService.login();
+    console.log('click on login');
+  }
+
+  logout() {
+    this.authService.logout();
+    console.log('click on logout');
+  }
+
+  navigateToNewBlog() {
+    this.router.navigate(['/blog-add']);
   }
 }
