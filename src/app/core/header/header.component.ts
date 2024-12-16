@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AsyncPipe, Location } from '@angular/common';
 import { StateService } from '../service/state.service';
 import { AuthService } from '../service/auth/auth.service';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-header',
@@ -31,6 +32,7 @@ import { AuthService } from '../service/auth/auth.service';
     MatInputModule,
     FormsModule,
     AsyncPipe,
+    MatButton,
   ],
   standalone: true,
 })
@@ -42,15 +44,15 @@ export class HeaderComponent {
   location = inject(Location);
   stateService = inject(StateService);
   authService = inject(AuthService);
+  readonly oidcSecurityService = inject(OidcSecurityService);
 
   searchString = model<string>('');
   loading = this.stateService.loading;
-  isAuth$ = this.authService.getUser();
+
+  readonly isAuthenticated = this.oidcSecurityService.authenticated;
+  readonly userData = this.oidcSecurityService.userData;
 
   constructor() {
-    this.isAuth$.subscribe((value) => {
-      console.log('Auth-Status geändert:', value.isAuthenticated);
-    });
     this.activatedRoute.queryParamMap
       .pipe(distinctUntilChanged())
       .subscribe((params) => {
@@ -77,6 +79,15 @@ export class HeaderComponent {
         }
       }
     });
+    effect(() => {
+      console.log(
+        'Authentication state changed:',
+        this.isAuthenticated().isAuthenticated,
+      );
+    });
+    effect(() => {
+      console.log('userDate state changed:', this.userData().userData);
+    });
   }
   login() {
     this.authService.login();
@@ -86,5 +97,9 @@ export class HeaderComponent {
   logout() {
     this.authService.logout();
     console.log('click on logout');
+  }
+
+  navigateToNewBlog() {
+    this.router.navigate(['/blog-add']);
   }
 }

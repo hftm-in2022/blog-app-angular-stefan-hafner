@@ -5,7 +5,6 @@ import { BlogCardComponent } from './shared/blog-card/blog-card.component';
 import { BlogOverviewPageComponent } from './feature/blog-overview-page/blog-overview-page.component';
 import { HeaderComponent } from './core/header/header.component';
 import { AuthService } from './core/service/auth/auth.service';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-root',
@@ -24,15 +23,9 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 export class AppComponent implements OnInit {
   title = 'blog-app-angular';
 
-  private readonly oidcSecurityService = inject(OidcSecurityService);
   private authService = inject(AuthService);
 
   ngOnInit() {
-    this.oidcSecurityService
-      .checkAuth()
-      .subscribe(({ isAuthenticated, userData, accessToken }) => {
-        console.log('app authenticated', isAuthenticated);
-        this.authService.setUser(isAuthenticated, userData, accessToken);
-      });
+    this.authService.handlePostLogin();
   }
 }

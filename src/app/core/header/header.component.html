@@ -19,7 +19,16 @@
 
   <span class="spacer"></span>
 
-  @if (isAuth$.getValue().isAuthenticated) {
+  @if (isAuthenticated().isAuthenticated) {
+    <button
+      mat-button
+      class="add-blog"
+      aria-label="Create a new Blog button"
+      (click)="navigateToNewBlog()"
+    >
+      Create a new Blog
+    </button>
+
     <button
       mat-icon-button
       class="example-icon logout-icon"

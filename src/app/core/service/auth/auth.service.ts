@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
+import { OidcSecurityService, LoginResponse } from 'angular-auth-oidc-client';
+import { BehaviorSubject, catchError, Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 export interface User {
   sub: string;
@@ -11,40 +13,60 @@ export interface User {
   email: string;
 }
 
-interface UserData {
-  isAuthenticated: boolean;
-  user: User;
-  token?: string;
-}
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   oidcSecurityService = inject(OidcSecurityService);
+  router = inject(Router);
 
-  private userData$: BehaviorSubject<UserData> = new BehaviorSubject<UserData>({
+  private loginResponse$ = new BehaviorSubject<LoginResponse>({
     isAuthenticated: false,
-    user: {} as User,
+    userData: null, // use Null for default value
+    accessToken: '',
+    idToken: '',
+    configId: '',
+    errorMessage: '',
   });
 
+  // Getter for LoginResponse
+  getLoginResponse(): Observable<LoginResponse> {
+    return this.loginResponse$.asObservable();
+  }
+  //Setter for LoginResponse
+  setLoginResponse(loginResponse: LoginResponse) {
+    this.loginResponse$.next(loginResponse);
+  }
+
   // Method to trigger login
-  login() {
+  login(): void {
     this.oidcSecurityService.authorize();
   }
 
   // Method to trigger logout
   logout() {
-    this.oidcSecurityService.logoff().subscribe((result) => {
-      console.log(result);
-      //this.isAuthenticatedSubject.next(false); // Reset authentication status
+    this.oidcSecurityService.logoff().subscribe({
+      next: (result) => {
+        console.log(result);
+      },
+      error: (err) => {
+        console.error('Error during logout:', err);
+      },
     });
   }
 
-  setUser(isAuthenticated: boolean, userData: User, token: string) {
-    this.userData$.next({ isAuthenticated, user: userData, token });
-  }
-
-  getUser() {
-    return this.userData$;
+  handlePostLogin(): void {
+    this.oidcSecurityService
+      .checkAuth()
+      .pipe(
+        tap((response) => {
+          this.setLoginResponse(response);
+        }),
+        catchError((error) => {
+          console.error('Error during post-login handling:', error);
+          return of(null);
+        }),
+      )
+      .subscribe();
   }
 }

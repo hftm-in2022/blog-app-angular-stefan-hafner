@@ -7,7 +7,7 @@
   margin-left: 40px; // Passt den oberen Abstand an
 }
 
-#profileImage {
+.profileImage {
   width: 2.1875rem;
   height: 2.1875rem;
   border-radius: 20px;
@@ -20,6 +20,6 @@
   cursor: pointer;
 }
 
-#add-blog {
-  margin-right: 100px;
+.add-blog {
+  margin-right: 30px;
 }

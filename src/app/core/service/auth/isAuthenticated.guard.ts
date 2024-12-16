@@ -2,21 +2,30 @@ import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from './auth.service';
 import { hasRole } from './jwt';
+import { map, take, of, catchError } from 'rxjs';
 
 export const isAuthenticatedGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (!authService.getUser().getValue().isAuthenticated) {
-    // If user is not logged in, redirect to the login page
-    authService.login();
-  }
+  return authService.getLoginResponse().pipe(
+    take(1),
+    map((loginResponse) => {
+      if (!loginResponse.isAuthenticated) {
+        authService.login();
+        return false;
+      }
 
-  if (hasRole('user', authService.getUser().getValue().token)) {
-    // If user has the user role, allow them to access the page
-    return true;
-  }
+      if (hasRole('user', loginResponse.accessToken)) {
+        return true;
+      }
 
-  // If user does not have the user role, redirect to the blogs page
-  return router.parseUrl('/blogs');
+      return router.parseUrl('/blog-overview'); //redirect to blog-overview
+    }),
+    catchError((error) => {
+      console.error('Error in isAuthenticatedGuard:', error);
+      authService.login();
+      return of(false);
+    }),
+  );
 };

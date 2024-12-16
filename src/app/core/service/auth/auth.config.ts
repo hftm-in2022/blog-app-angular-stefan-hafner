@@ -1,9 +1,15 @@
 import { PassedInitialConfig, LogLevel } from 'angular-auth-oidc-client';
 import { environment } from '../../../../environments/environment';
 
-const redirectUrl = typeof window !== 'undefined' ? window.location.origin : '';
+//const redirectUrl = typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname.split('?')[0]}` : '';
+const redirectUrl =
+  typeof window !== 'undefined'
+    ? `${window.location.origin}/blog-overview`
+    : '';
 const postLogoutRedirectUri =
-  typeof window !== 'undefined' ? window.location.origin : '';
+  typeof window !== 'undefined'
+    ? `${window.location.origin}/blog-overview`
+    : '';
 const silentRenewUrl =
   typeof window !== 'undefined'
     ? window.location.origin + '/silent-renew.html'
