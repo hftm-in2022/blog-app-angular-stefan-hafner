@@ -87,6 +87,13 @@
     }
   }
 
+  .title-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem;
+  }
+
   .user-actions {
     display: flex;
     align-items: center;
@@ -157,7 +164,7 @@
       margin-bottom: 0.5rem;
     }
 
-    .button {
+    button {
       align-self: flex-start;
     }
   }

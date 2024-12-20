@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import {
-  BlogEntryOverview,
   BlogEntryOverviewResponse,
   NewBlogEntry,
 } from '../../model/blog-entry';
@@ -17,11 +16,17 @@ export class BlogBackendService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
 
-  getBlogEntryOverview(searchString?: string): Observable<BlogEntryOverview[]> {
+  getBlogEntryOverview(
+    page = 1,
+    pageSize = 10,
+    searchString?: string,
+  ): Observable<BlogEntryOverviewResponse> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    let params = new HttpParams().set('page', '1').set('pageSize', '10');
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
 
     if (searchString) {
       params = params.set('searchstring', searchString);
@@ -36,7 +41,13 @@ export class BlogBackendService {
       })
       .pipe(
         // delay(Math.floor(Math.random() * 1000)), // Zum Testen des Loading Spinners Verzögerung zwischen 0 und 1000 ms
-        map((response) => response.data),
+        map((response) => ({
+          data: response.data,
+          pageIndex: response.pageIndex,
+          pageSize: response.pageSize,
+          totalCount: response.totalCount,
+          maxPageSize: response.maxPageSize,
+        })),
       );
   }
 

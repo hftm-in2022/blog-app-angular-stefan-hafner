@@ -1,5 +1,9 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { BlogEntry, BlogEntryOverview } from '../model/blog-entry';
+import {
+  BlogEntry,
+  BlogEntryOverview,
+  BlogEntryOverviewResponse,
+} from '../model/blog-entry';
 import { BlogBackendService } from './blogBackend/blog-backend.service';
 import {
   BehaviorSubject,
@@ -12,6 +16,7 @@ import {
 
 interface BlogState {
   isLoading: boolean;
+  isSubmitting: boolean;
   blogs: BlogEntryOverview[] | null;
   blogDetail: BlogEntry | null;
   error: Error | null;
@@ -25,12 +30,14 @@ export class StateService {
 
   #state = signal<BlogState>({
     isLoading: false,
+    isSubmitting: false,
     blogs: [],
     blogDetail: null,
     error: null,
   });
 
   loading = computed(() => this.#state().isLoading);
+  isSubmitting = computed(() => this.#state().isSubmitting);
 
   // reducers
   setLoadingState() {
@@ -64,26 +71,55 @@ export class StateService {
     }));
   }
 
+  setSubmittingState() {
+    this.#state.update((state) => ({
+      ...state,
+      isSubmitting: true,
+    }));
+  }
+
+  setSubmitSuccess() {
+    this.#state.update((state) => ({
+      ...state,
+      isLoading: false,
+    }));
+  }
+
+  setSubmitError(error: Error) {
+    this.#state.update((state) => ({
+      ...state,
+      isLoading: false,
+      error,
+    }));
+  }
+
   // async actions
   rxGetBlogs(filter?: {
     searchString?: string;
-  }): Observable<BlogEntryOverview[]> {
-    // Local state for the last request
+    page?: number;
+    pageSize?: number;
+  }): Observable<BlogEntryOverviewResponse> {
     const searchString$ = new BehaviorSubject<string>(
       filter?.searchString || '',
     );
 
     return searchString$.pipe(
-      debounceTime(200), // Wait time for rapid changes
-      tap(() => this.setLoadingState()), // Activate loading state
-      switchMap((searchString) =>
-        this.#BlogbackendService.getBlogEntryOverview(searchString).pipe(
-          tap((blogs) => this.setLoadedBlogs(blogs)), // Update state with loaded blogs
-          catchError((error) => {
-            this.setError(error); // Save error in state
-            throw error; // Propagate the error
-          }),
-        ),
+      debounceTime(200),
+      tap(() => this.setLoadingState()),
+      switchMap(() =>
+        this.#BlogbackendService
+          .getBlogEntryOverview(
+            filter?.page || 1,
+            filter?.pageSize || 10,
+            filter?.searchString,
+          )
+          .pipe(
+            tap((blogs) => this.setLoadedBlogs(blogs.data)),
+            catchError((error) => {
+              this.setError(error);
+              throw error;
+            }),
+          ),
       ),
     );
   }

@@ -1,115 +1,125 @@
 <app-header [isOverview]="false"></app-header>
+@if (isSubmitting()) {
+  <mat-spinner></mat-spinner>
+} @else {
+  <mat-card class="blog-card" #container>
+    <mat-card-title>Add New Blog Post</mat-card-title>
 
-<mat-card class="blog-card" #container>
-  <mat-card-title>Add New Blog Post</mat-card-title>
-
-  <form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
-    <!-- Image Upload
-        <div class="upload-section">
-            <button mat-raised-button color="primary" (click)="fileInput.click()">
-                <mat-icon>cloud_upload</mat-icon>
-                Photo
-            </button>
-            <input type="file" #fileInput accept="image/*" (change)="onFileSelected($event)" style="display: none;" />
-            @if (selectedFile){
-                <span class="text"> Data:
-                    {{ selectedFile }}</span>
-            }
-            @if(imagePreview){
-                <div class="header">
-                <img [src]="imagePreview" alt="Selected Image" class="image-preview" />
+    <form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+      <!-- Image Upload
+                <div class="upload-section">
+                    <button mat-raised-button color="primary" (click)="fileInput.click()">
+                        <mat-icon>cloud_upload</mat-icon>
+                        Photo
+                    </button>
+                    <input type="file" #fileInput accept="image/*" (change)="onFileSelected($event)" style="display: none;" />
+                    @if (selectedFile){
+                        <span class="text"> Data:
+                            {{ selectedFile }}</span>
+                    }
+                    @if(imagePreview){
+                        <div class="header">
+                        <img [src]="imagePreview" alt="Selected Image" class="image-preview" />
+                        </div>
+                    }
                 </div>
+                -->
+
+      <!-- Pic URL -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Pic URL</mat-label>
+        <input matInput formControlName="picUrl" />
+        @if (blogForm.get("picUrl")?.invalid) {
+          <mat-error>
+            @if (blogForm.get("picUrl")?.hasError("required")) {
+              Title is required.
             }
-        </div>
-        -->
+            @if (blogForm.get("picUrl")?.hasError("pattern")) {
+              Invalid URL format.
+            }
+          </mat-error>
+        }
+      </mat-form-field>
 
-    <!-- Pic URL -->
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Pic URL</mat-label>
-      <input matInput formControlName="picUrl" />
-      @if (blogForm.get("picUrl")?.invalid) {
-        <mat-error>
-          @if (blogForm.get("picUrl")?.hasError("required")) {
-            Title is required.
-          }
-          @if (blogForm.get("picUrl")?.hasError("pattern")) {
-            Invalid URL format.
-          }
-        </mat-error>
-      }
-    </mat-form-field>
+      <div class="preview-block">
+        @if (imagePreview) {
+          <div class="header">
+            <img
+              [src]="imagePreview"
+              alt="Selected Image"
+              class="image-preview"
+            />
+          </div>
+        }
+      </div>
 
-    <div class="preview-block">
-      @if (imagePreview) {
-        <div class="header">
-          <img
-            [src]="imagePreview"
-            alt="Selected Image"
-            class="image-preview"
-          />
-        </div>
-      }
-    </div>
+      <!-- Title Input -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" placeholder="Enter title" />
+        @if (blogForm.get("title")?.invalid) {
+          <mat-error>
+            @if (blogForm.get("title")?.hasError("required")) {
+              Title is required.
+            }
+            @if (blogForm.get("title")?.hasError("maxlength")) {
+              Max 100 characters.
+            }
+          </mat-error>
+        }
+      </mat-form-field>
 
-    <!-- Title Input -->
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Title</mat-label>
-      <input matInput formControlName="title" placeholder="Enter title" />
-      @if (blogForm.get("title")?.invalid) {
-        <mat-error>
-          @if (blogForm.get("title")?.hasError("required")) {
-            Title is required.
-          }
-          @if (blogForm.get("title")?.hasError("maxlength")) {
-            Max 100 characters.
-          }
-        </mat-error>
-      }
-    </mat-form-field>
+      <!-- Content Input -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Content</mat-label>
+        <textarea
+          matInput
+          #message
+          formControlName="content"
+          placeholder="Enter content"
+          class="textarea"
+        ></textarea>
+        @if (blogForm.get("content")?.invalid) {
+          <mat-error>
+            @if (blogForm.get("content")?.hasError("required")) {
+              Content is required.
+            }
+            @if (blogForm.get("content")?.hasError("minlength")) {
+              Minimum 10 characters required.
+            }
+          </mat-error>
+        }
+      </mat-form-field>
 
-    <!-- Content Input -->
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Content</mat-label>
-      <textarea
-        matInput
-        #message
-        formControlName="content"
-        placeholder="Enter content"
-        class="textarea"
-      ></textarea>
-      @if (blogForm.get("content")?.invalid) {
-        <mat-error>
-          @if (blogForm.get("content")?.hasError("required")) {
-            Content is required.
-          }
-          @if (blogForm.get("content")?.hasError("minlength")) {
-            Minimum 10 characters required.
-          }
-        </mat-error>
-      }
-    </mat-form-field>
-
-    <!-- Submit Button -->
-    <div class="form-actions">
-      <button
-        mat-raised-button
-        class="button"
-        color="warn"
-        (click)="resetForm()"
-        [disabled]="blogForm.pristine"
-      >
-        Reset
-      </button>
-      <span class="spacer"></span>
-      <button
-        mat-raised-button
-        class="button"
-        color="primary"
-        type="submit"
-        [disabled]="blogForm.invalid"
-      >
-        Submit
-      </button>
-    </div>
-  </form>
-</mat-card>
+      <!-- Submit Button -->
+      <div class="form-actions">
+        <button
+          mat-raised-button
+          class="left-button"
+          (click)="onBack()"
+          class="button"
+        >
+          Back
+        </button>
+        <button
+          mat-raised-button
+          class="button"
+          color="warn"
+          (click)="resetForm()"
+        >
+          Reset
+        </button>
+        <span class="spacer"></span>
+        <button
+          mat-raised-button
+          class="button"
+          color="primary"
+          type="submit"
+          [disabled]="blogForm.invalid"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </mat-card>
+}

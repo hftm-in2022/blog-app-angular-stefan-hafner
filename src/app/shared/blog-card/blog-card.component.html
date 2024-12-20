@@ -57,24 +57,27 @@
       <span class="comments">Comments: {{ commentsCount() }}</span>
     </div>
     <!-- User Actions and Status -->
+
     <div class="user-actions">
-      @if (!blog.likedByMe) {
-        <button mat-raised-button (click)="onLikeClicked()" class="button">
-          Like
-        </button>
-      }
-      @if (blog.likedByMe) {
-        <button mat-raised-button (click)="onUnlikeClicked()" class="button">
-          Unlike
-        </button>
+      @if (isAuthenticated().isAuthenticated) {
+        @if (!blog.likedByMe) {
+          <button mat-raised-button (click)="onLikeClicked()" class="button">
+            Like
+          </button>
+        }
+        @if (blog.likedByMe) {
+          <button mat-raised-button (click)="onUnlikeClicked()" class="button">
+            Unlike
+          </button>
+        }
       }
       @if (blog.createdByMe) {
         <mat-card-content>You created this entry</mat-card-content>
       }
       <!-- Author -->
       <mat-card-content class="author"
-        >Author: {{ blog.author }}</mat-card-content
-      >
+        >Author: {{ blog.author }}
+      </mat-card-content>
     </div>
     @if (!isOverview) {
       <!-- Comment Section -->
@@ -95,37 +98,51 @@
         } @else {
           <p>No comments available.</p>
         }
-
-        <!-- Add Comment -->
-        <div class="add-comment">
-          <mat-form-field>
-            <mat-label>Leave a comment</mat-label>
-            <textarea
-              matInput
-              #message
-              [(ngModel)]="newCommentContent"
-            ></textarea>
-            <mat-hint align="end">{{ message.value.length }}</mat-hint>
-          </mat-form-field>
-          <mat-card-actions class="card-action">
-            <button
-              mat-raised-button
-              class="left-button"
-              (click)="onBack()"
-              class="button"
-            >
-              Back
-            </button>
-            <button
-              mat-raised-button
-              class="right-button"
-              (click)="submitComment()"
-              class="button"
-            >
-              Submit
-            </button>
-          </mat-card-actions>
-        </div>
+        @if (isAuthenticated().isAuthenticated) {
+          <!-- Add Comment -->
+          <div class="add-comment">
+            <mat-form-field>
+              <mat-label>Leave a comment</mat-label>
+              <textarea
+                matInput
+                #message
+                [(ngModel)]="newCommentContent"
+              ></textarea>
+              <mat-hint align="end">{{ message.value.length }}</mat-hint>
+            </mat-form-field>
+            <mat-card-actions class="card-action">
+              <button
+                mat-raised-button
+                class="left-button"
+                (click)="onBack()"
+                class="button"
+              >
+                Back
+              </button>
+              <button
+                mat-raised-button
+                class="right-button"
+                (click)="submitComment()"
+                class="button"
+              >
+                Submit
+              </button>
+            </mat-card-actions>
+          </div>
+        } @else {
+          <div>
+            <mat-card-actions class="card-action">
+              <button
+                mat-raised-button
+                class="left-button"
+                (click)="onBack()"
+                class="button"
+              >
+                Back
+              </button>
+            </mat-card-actions>
+          </div>
+        }
       </div>
     }
   </mat-card>

@@ -13,6 +13,10 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.service';
 import { NewBlogEntry } from '../../core/model/blog-entry';
+import { StateService } from '../../core/service/state.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-blog-add-page',
@@ -28,6 +32,7 @@ import { NewBlogEntry } from '../../core/model/blog-entry';
     MatIcon,
     MatLabel,
     MatButton,
+    MatProgressSpinner,
   ],
   templateUrl: './blog-add-page.component.html',
   styleUrl: './blog-add-page.component.scss',
@@ -39,6 +44,10 @@ export class BlogAddPageComponent {
   // fileError: string | null = null;
   imagePreview: string | ArrayBuffer | null = null;
   blogBackendService = inject(BlogBackendService);
+  stateService = inject(StateService);
+  private router = inject(Router);
+  private location = inject(Location);
+  isSubmitting = this.stateService.isSubmitting;
 
   constructor(private fb: FormBuilder) {
     const randomId = Math.floor(Math.random() * 1084) + 1;
@@ -67,31 +76,6 @@ export class BlogAddPageComponent {
     });
   }
 
-  /*
-      onSubmit(): void {
-        if (this.blogForm.valid) {
-          const formData = new FormData();
-          formData.append('title', this.blogForm.get('title')?.value);
-          formData.append('content', this.blogForm.get('content')?.value);
-          formData.append('headerImageUrl', this.blogForm.get('picUrl')?.value);
-
-          const file = this.blogForm.get('file')?.value;
-          if (file) {
-            formData.append('file', file);
-          }
-
-          this.blogBackendService.createBlogEntry(formData).subscribe({
-            next: (response) => {
-              console.log('Blog entry successfully created:', response);
-            },
-            error: (err) => {
-              console.error('Error when creating the blog entry:', err);
-            },
-          });
-        }
-      }
-    */
-
   onSubmit(): void {
     if (this.blogForm.valid) {
       const payload: NewBlogEntry = {
@@ -100,18 +84,21 @@ export class BlogAddPageComponent {
         headerImageUrl: this.blogForm.get('picUrl')?.value,
       };
       /*
-              const file = this.blogForm.get('file')?.value;
-                  if (file) {
-                    formData.append('file', file);
-                  }
-            */
+                    const file = this.blogForm.get('file')?.value;
+                        if (file) {
+                          formData.append('file', file);
+                        }
+                  */
+      this.stateService.setSubmittingState();
 
       this.blogBackendService.createBlogEntry(payload).subscribe({
         next: (response) => {
           console.log('Blog entry successfully created:', response);
+          this.stateService.setSubmitSuccess();
         },
         error: (err) => {
           console.error('Error when creating the blog entry:', err);
+          this.stateService.setSubmitError(err);
         },
       });
     }
@@ -129,25 +116,33 @@ export class BlogAddPageComponent {
     this.imagePreview = defaultUrl; // Optional, falls ein Bildvorschau zurückgesetzt werden soll
   }
 
-  /*
-      onFileSelected(event: Event): void {
-        const input = event.target as HTMLInputElement;
-        if (input.files && input.files.length > 0) {
-          const file = input.files[0];
-          this.selectedFile = file.name;
+  onBack() {
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/default-route']);
+    }
+  }
 
-          if (!file.type.startsWith('image/')) {
-            this.fileError = 'Bitte wählen Sie eine gültige Bilddatei aus.';
-            this.selectedFile = null;
-            return;
+  /*
+        onFileSelected(event: Event): void {
+          const input = event.target as HTMLInputElement;
+          if (input.files && input.files.length > 0) {
+            const file = input.files[0];
+            this.selectedFile = file.name;
+
+            if (!file.type.startsWith('image/')) {
+              this.fileError = 'Bitte wählen Sie eine gültige Bilddatei aus.';
+              this.selectedFile = null;
+              return;
+            }
+            // Erstellen der Bildvorschau
+            const reader = new FileReader();
+            reader.onload = () => {
+              this.imagePreview = reader.result;
+            };
+            reader.readAsDataURL(file);
           }
-          // Erstellen der Bildvorschau
-          const reader = new FileReader();
-          reader.onload = () => {
-            this.imagePreview = reader.result;
-          };
-          reader.readAsDataURL(file);
         }
-      }
-    */
+      */
 }

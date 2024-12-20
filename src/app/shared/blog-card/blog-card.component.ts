@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { StateService } from '../../core/service/state.service';
+import { AuthService } from '../../core/service/auth/auth.service';
 
 export interface BaseBlogEntry {
   id: number;
@@ -85,6 +86,8 @@ export class BlogCardComponent {
   router = inject(Router);
   location = inject(Location);
   stateService = inject(StateService);
+  authService = inject(AuthService);
+  isAuthenticated = this.authService.oidcSecurityService.authenticated;
 
   newCommentContent = '';
 
