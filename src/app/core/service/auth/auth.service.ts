@@ -37,6 +37,9 @@ export class AuthService {
   setLoginResponse(loginResponse: LoginResponse) {
     this.loginResponse$.next(loginResponse);
   }
+  getToken(): string | null {
+    return this.loginResponse$.getValue().accessToken;
+  }
 
   // Method to trigger login
   login(): void {
