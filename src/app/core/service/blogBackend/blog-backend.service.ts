@@ -93,6 +93,19 @@ export class BlogBackendService {
     );
   }
 
+  addComment(comment: string, blogId: number): Observable<void> {
+    return this.http.post<void>(
+      `${environment.backendUrl}/entries/${blogId}/comments`,
+      { content: comment },
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.getToken()}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+  }
+
   likeBlogEntry(id: number): Observable<void> {
     console.log('Liking blog entry...');
 

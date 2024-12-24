@@ -41,6 +41,10 @@ export class AuthService {
     return this.loginResponse$.getValue().accessToken;
   }
 
+  getUser(): User | null {
+    return this.loginResponse$.getValue().userData;
+  }
+
   // Method to trigger login
   login(): void {
     this.oidcSecurityService.authorize();
