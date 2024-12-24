@@ -1,155 +1,171 @@
 @import "../../app.component.scss";
 
-:host {
-  .blog-card {
-    margin: 0.625rem;
-    border: 1px solid #ddd;
-    border-radius: 0.5rem;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.blog-card {
+  margin-top: 0.7rem;
+  margin-bottom: 0.7rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Ensures footer stays at the bottom */
+
+  /* Responsive width adjustments */
+  @media screen and (min-width: 450px) {
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media screen and (min-width: 841px) {
+    width: 840px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media screen and (min-width: 1261px) {
+    width: 1260px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media screen and (min-width: 1681px) {
+    width: 1680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .header {
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      transition:
+        transform 0.3s ease,
+        opacity 0.3s ease; // Smooth transition for hover effects
+      cursor: default;
+    }
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .header.overview img:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+    cursor: pointer;
+  }
+
+  .title-group {
+    display: flex; // Enables Flexbox for horizontal layout
+    align-items: center; // Centers items vertically
+    justify-content: center; // Centers the title by default
+  }
+
+  mat-card-title {
+    flex: 1;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+
+  .goToDeatilsPage-button {
+    margin-left: auto; // Moves the button to the right
+  }
+
+  mat-card-content {
+    margin: 0.5rem;
+  }
+
+  .blog-stats {
+    font-size: 0.875rem;
+    color: #777;
+    margin: 0.5rem;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Ensures footer stays at the bottom */
+    justify-content: space-between;
 
-    /* Responsive width adjustments */
-    @media screen and (min-width: 450px) {
-      width: 400px;
-    }
-    @media screen and (min-width: 841px) {
-      width: 840px;
-    }
-    @media screen and (min-width: 1261px) {
-      width: 1260px;
-    }
-    @media screen and (min-width: 1681px) {
-      width: 1680px;
-    }
-
-    .header {
-      img {
-        width: 100%;
-        height: auto;
-        border-radius: 0.5rem;
-        transition:
-          transform 0.3s ease,
-          opacity 0.3s ease; // Smooth transition for hover effects
-        cursor: default;
-      }
-    }
-
-    .header.overview img:hover {
-      opacity: 0.9;
-      transform: scale(1.02);
-      cursor: pointer;
-    }
-
-    .title-group {
-      display: flex; // Enables Flexbox for horizontal layout
-      align-items: center; // Centers items vertically
-      justify-content: center; // Centers the title by default
-    }
-
-    mat-card-title {
-      flex: 1;
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.5rem;
-    }
-
-    .goToDeatilsPage-button {
-      margin-left: auto; // Moves the button to the right
-    }
-
-    mat-card-content {
-      margin: 0.5rem;
-    }
-
-    .blog-stats {
-      font-size: 0.875rem;
-      color: #777;
-      margin: 0.5rem;
-      display: flex;
-      justify-content: space-between;
-
-      .likes,
-      .comments {
-        margin-right: 1rem;
-      }
-    }
-
-    .user-actions {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin: 0.5rem;
-
-      .created-by-me {
-        color: #28a745;
-        font-weight: bold;
-      }
-
-      .blog-meta {
-        font-size: 0.875rem;
-        color: #777;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-      }
-      .author {
-        font-weight: bold;
-        margin-left: auto;
-        font-size: 0.875rem;
-        color: #777;
-      }
+    .likes,
+    .comments {
+      margin-right: 1rem;
     }
   }
-  .comments-section {
-    margin-top: 2rem;
-    padding: 0.5rem;
 
-    .comment {
-      width: fit-content;
-      max-width: 75%;
-      border-top: 1px solid #ddd;
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 1rem;
+  .title-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem;
+  }
 
-      p {
-        margin: 0;
-      }
+  .user-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0.5rem;
+
+    .created-by-me {
+      color: #28a745;
+      font-weight: bold;
     }
 
-    .add-comment {
+    .blog-meta {
+      font-size: 0.875rem;
+      color: #777;
       display: flex;
-      flex-direction: column;
-      margin-top: 5px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .author {
+      font-weight: bold;
+      margin-left: auto;
+      font-size: 0.875rem;
+      color: #777;
+    }
+  }
+}
+.comments-section {
+  margin-top: 2rem;
+  padding: 0.5rem;
 
-      .card-action {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 0.5rem;
+  .comment {
+    width: fit-content;
+    max-width: 75%;
+    border-top: 1px solid #ddd;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 1rem;
 
-        .left-button {
-          margin-right: auto;
-        }
+    p {
+      margin: 0;
+    }
+  }
 
-        .right-button {
-          margin-left: auto;
-        }
+  .add-comment {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+
+    .card-action {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+
+      .left-button {
+        margin-right: auto;
       }
-      textarea {
-        resize: vertical;
-        padding: 0.5rem;
-        font-size: 1rem;
-        border-radius: 0.25rem;
-        border: 1px solid #ddd;
-        margin-bottom: 0.5rem;
-      }
 
-      .button {
-        align-self: flex-start;
+      .right-button {
+        margin-left: auto;
       }
+    }
+    textarea {
+      resize: vertical;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 0.25rem;
+      border: 1px solid #ddd;
+      margin-bottom: 0.5rem;
+    }
+
+    button {
+      align-self: flex-start;
     }
   }
 }

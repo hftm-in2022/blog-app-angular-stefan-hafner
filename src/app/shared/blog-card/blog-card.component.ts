@@ -16,6 +16,8 @@ import { MatInputModule } from '@angular/material/input';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { StateService } from '../../core/service/state.service';
+import { AuthService } from '../../core/service/auth/auth.service';
+import { MatIcon } from '@angular/material/icon';
 
 export interface BaseBlogEntry {
   id: number;
@@ -64,6 +66,7 @@ export interface NewComment {
     MatListModule,
     MatFormFieldModule,
     MatInputModule,
+    MatIcon,
   ],
   templateUrl: './blog-card.component.html',
   styleUrl: './blog-card.component.scss',
@@ -80,11 +83,14 @@ export class BlogCardComponent {
   @Output() addComment = new EventEmitter<string>(); // Emit comment content
   @Output() navigateToDetails = new EventEmitter<number>(); // Emit navigation event
   @Output() backButton = new EventEmitter<void>(); // Emit back button event
+  @Output() deleteBlog = new EventEmitter<number>();
 
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
   location = inject(Location);
   stateService = inject(StateService);
+  authService = inject(AuthService);
+  isAuthenticated = this.authService.oidcSecurityService.authenticated;
 
   newCommentContent = '';
 
@@ -120,5 +126,9 @@ export class BlogCardComponent {
 
   onBack() {
     this.backButton.emit(); // Emit the back button event
+  }
+
+  onDeleteBlog() {
+    this.deleteBlog.emit(this.blog.id);
   }
 }

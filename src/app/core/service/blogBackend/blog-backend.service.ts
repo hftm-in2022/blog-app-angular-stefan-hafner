@@ -1,25 +1,29 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-
 import {
-  BlogEntryOverview,
   BlogEntryOverviewResponse,
+  NewBlogEntry,
 } from '../../model/blog-entry';
 import { environment } from '../../../../environments/environment';
 import { BlogEntry } from '../../model/blog-entry';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BlogBackendService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+  private authService = inject(AuthService);
 
-  getBlogEntryOverview(searchString?: string): Observable<BlogEntryOverview[]> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-    let params = new HttpParams().set('page', '1').set('pageSize', '10');
+  getBlogEntryOverview(
+    page = 0,
+    pageSize = 10,
+    searchString?: string,
+  ): Observable<BlogEntryOverviewResponse> {
+    let params = new HttpParams()
+      .set('pageSize', pageSize.toString())
+      .set('pageIndex', page.toString());
 
     if (searchString) {
       params = params.set('searchstring', searchString);
@@ -30,51 +34,119 @@ export class BlogBackendService {
     return this.http
       .get<BlogEntryOverviewResponse>(`${environment.backendUrl}/entries`, {
         params,
-        headers,
+        headers: {
+          Authorization: `Bearer ${this.authService.getToken()}`,
+          'Content-Type': 'application/json',
+        },
       })
       .pipe(
         // delay(Math.floor(Math.random() * 1000)), // Zum Testen des Loading Spinners Verzögerung zwischen 0 und 1000 ms
-        map((response) => response.data),
+        map((response) => ({
+          data: response.data,
+          pageIndex: response.pageIndex,
+          pageSize: response.pageSize,
+          totalCount: response.totalCount,
+          maxPageSize: response.maxPageSize,
+        })),
       );
   }
 
   getBlogDetail(id: number): Observable<BlogEntry> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
     console.log('Fetching blog detail...');
     return this.http
       .get<BlogEntry>(`${environment.backendUrl}/entries/${id}`, {
-        headers,
+        headers: {
+          Authorization: `Bearer ${this.authService.getToken()}`,
+          'Content-Type': 'application/json',
+        },
       })
       .pipe
       //delay(Math.floor(Math.random() * 1000)),  // Zum Testen des Loading Spinners Verzögerung zwischen 0 und 1000 ms
       ();
   }
 
+  /*
+    createBlogEntry(formData: FormData): Observable<BlogEntry> {
+      console.log('Creating new blog entry...');
+
+      return this.http.post<BlogEntry>(
+          `${environment.backendUrl}/entries`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${yourAuthToken}`,
+            },
+          }
+      );
+    }
+  */
+  createBlogEntry(payload: NewBlogEntry): Observable<BlogEntry> {
+    return this.http.post<BlogEntry>(
+      `${environment.backendUrl}/entries`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.getToken()}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+  }
+
+  addComment(comment: string, blogId: number): Observable<void> {
+    return this.http.post<void>(
+      `${environment.backendUrl}/entries/${blogId}/comments`,
+      { content: comment },
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.getToken()}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+  }
+
   likeBlogEntry(id: number): Observable<void> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
     console.log('Liking blog entry...');
 
     return this.http.put<void>(
       `${environment.backendUrl}/entries/${id}/like-info`,
       { likedByMe: true }, // JSON body
-      { headers },
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.getToken()}`,
+          'Content-Type': 'application/json',
+        },
+      },
     );
   }
 
   unlikeBlogEntry(id: number): Observable<void> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
     console.log('Unliking blog entry...');
 
     return this.http.put<void>(
       `${environment.backendUrl}/entries/${id}/like-info`,
       { likedByMe: false }, // JSON body
-      { headers },
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.getToken()}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+  }
+
+  deleteBlogEntry(blogId: number) {
+    console.log('Deleting blog entry...');
+
+    return this.http.delete<void>(
+      `${environment.backendUrl}/entries/${blogId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.getToken()}`,
+          'Content-Type': 'application/json',
+        },
+      },
     );
   }
 }

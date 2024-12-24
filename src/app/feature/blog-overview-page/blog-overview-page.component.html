@@ -26,5 +26,12 @@
         </a>
       </app-blog-card>
     }
+    <!-- Pagination -->
+    <mat-paginator
+      [length]="totalItems"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 25, 50]"
+      (page)="onNextPage($event)"
+    ></mat-paginator>
   </div>
 }

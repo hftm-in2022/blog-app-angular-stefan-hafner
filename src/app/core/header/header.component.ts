@@ -85,9 +85,6 @@ export class HeaderComponent {
         this.isAuthenticated().isAuthenticated,
       );
     });
-    effect(() => {
-      console.log('userDate state changed:', this.userData().userData);
-    });
   }
   login() {
     this.authService.login();
