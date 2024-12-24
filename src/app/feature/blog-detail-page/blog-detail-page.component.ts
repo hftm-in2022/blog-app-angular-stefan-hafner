@@ -44,25 +44,19 @@ export class BlogDetailPageComponent implements OnInit {
   }
 
   handleLike(blog: BlogEntryOverview | BlogEntry) {
-    // Error 401 (Unauthorized) when calling the backend
     this.blogBackendService.likeBlogEntry(blog.id).subscribe(() => {
       blog.likedByMe = true;
-      blog.likes++;
     });
 
     blog.likedByMe = true;
-    blog.likes++;
   }
 
   handleUnlike(blog: BlogEntryOverview | BlogEntry) {
-    /* Error 401 (Unauthorized) when calling the backend
     this.blogBackendService.unlikeBlogEntry(blog.id).subscribe(() => {
-     blog.likedByMe = false;
-     blog.likes--;
+      blog.likedByMe = false;
     });
-     */
+
     blog.likedByMe = false;
-    blog.likes--;
   }
 
   handleAddComment(blogEntry: string) {
@@ -75,5 +69,12 @@ export class BlogDetailPageComponent implements OnInit {
     } else {
       this.router.navigate(['/default-route']);
     }
+  }
+
+  handleDelete(blogId: number) {
+    this.blogBackendService.deleteBlogEntry(blogId).subscribe(() => {
+      this.stateService.rxGetBlogs();
+    });
+    this.handleBackButton();
   }
 }

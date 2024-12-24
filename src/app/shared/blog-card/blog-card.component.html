@@ -38,6 +38,18 @@
             </button>
           </span>
         }
+        @if (blog.createdByMe && !isOverview) {
+          <span class="goToDetailsPage-button">
+            <button
+              mat-icon-button
+              (click)="onDeleteBlog()"
+              class="button"
+              aria-label="Delete Blog"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </span>
+        }
       </div>
     }
 
@@ -70,9 +82,6 @@
             Unlike
           </button>
         }
-      }
-      @if (blog.createdByMe) {
-        <mat-card-content>You created this entry</mat-card-content>
       }
       <!-- Author -->
       <mat-card-content class="author"

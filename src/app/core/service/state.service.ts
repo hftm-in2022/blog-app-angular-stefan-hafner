@@ -109,7 +109,7 @@ export class StateService {
       switchMap(() =>
         this.#BlogbackendService
           .getBlogEntryOverview(
-            filter?.page || 1,
+            filter?.page || 0,
             filter?.pageSize || 10,
             filter?.searchString,
           )

@@ -17,6 +17,7 @@ import { map } from 'rxjs';
 import { StateService } from '../../core/service/state.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatPaginator } from '@angular/material/paginator';
+import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.service';
 
 @Component({
   selector: 'app-blog-overview-page',
@@ -36,12 +37,15 @@ import { MatPaginator } from '@angular/material/paginator';
 export class BlogOverviewPageComponent implements OnInit {
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
+  blogBackendService = inject(BlogBackendService);
 
   stateService = inject(StateService);
   loading = this.stateService.loading;
-  blogOverview$ = this.activatedRoute.data.pipe(map((data) => data['blog']));
+  blogOverview$ = this.activatedRoute.data.pipe(
+    map((data) => data['blog']), // Das gesamte BlogEntryOverviewResponse-Objekt
+    map((response: BlogEntryOverviewResponse) => response.data), // Nur das `data`-Array extrahieren
+  );
 
-  blogs: BlogEntryOverview[] = [];
   pageSize = 10;
   currentPage = 1;
   totalItems = 0;
@@ -50,32 +54,33 @@ export class BlogOverviewPageComponent implements OnInit {
     this.activatedRoute.data
       .pipe(map((data) => data['blog']))
       .subscribe((response: BlogEntryOverviewResponse) => {
-        this.blogs = response.data;
         this.totalItems = response.totalCount;
+        this.pageSize = response.pageSize;
+        this.currentPage = response.pageIndex;
       });
   }
 
-  loadBlogs(page: number, pageSize: number): void {
-    this.stateService.rxGetBlogs({ page, pageSize }).subscribe({
-      next: (response) => {
-        if (response?.data && Array.isArray(response.data)) {
-          this.blogs = response.data; // Blog-Daten
-        } else {
-          console.error('Invalid API response format:', response);
-          this.blogs = []; // Fallback
-        }
-      },
-      error: (err) => {
-        console.error('Error loading blogs:', err);
-        this.blogs = []; // Fallback bei Fehler
-      },
-    });
-  }
+  onNextPage(event: { pageIndex: number; pageSize: number }): void {
+    const page = event.pageIndex;
+    const pageSize = event.pageSize;
 
-  onPageChange(event: { pageIndex: number; pageSize: number }): void {
-    this.currentPage = event.pageIndex + 1;
-    this.pageSize = event.pageSize;
-    this.loadBlogs(this.currentPage, this.pageSize);
+    // Extract query parameters and update navigation
+    this.activatedRoute.queryParams
+      .subscribe((params) => {
+        const searchString = params['searchString'] || null; // Use existing searchString if available
+
+        // Navigate with updated query parameters
+        this.router.navigate([], {
+          relativeTo: this.activatedRoute,
+          queryParams: {
+            page,
+            pageSize,
+            ...(searchString ? { searchString } : {}),
+          },
+          queryParamsHandling: 'merge', // Retain existing query parameters
+        });
+      })
+      .unsubscribe(); // Unsubscribe directly to avoid memory leaks
   }
 
   handleNavigationToDetails(blogId: number) {
@@ -84,24 +89,17 @@ export class BlogOverviewPageComponent implements OnInit {
   }
 
   handleLike(blog: BlogEntryOverview | BlogEntry) {
-    /* Error 401 (Unauthorized) when calling the backend
     this.blogBackendService.likeBlogEntry(blog.id).subscribe(() => {
       blog.likedByMe = true;
-      blog.likes++;
     });
-    */
+
     blog.likedByMe = true;
-    blog.likes++;
   }
 
   handleUnlike(blog: BlogEntryOverview | BlogEntry) {
-    /* Error 401 (Unauthorized) when calling the backend
     this.blogBackendService.unlikeBlogEntry(blog.id).subscribe(() => {
-     blog.likedByMe = false;
-     blog.likes--;
+      blog.likedByMe = false;
     });
-     */
     blog.likedByMe = false;
-    blog.likes--;
   }
 }

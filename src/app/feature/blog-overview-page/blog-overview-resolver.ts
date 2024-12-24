@@ -8,7 +8,7 @@ export const blogOverviewResolver: ResolveFn<BlogEntryOverviewResponse> = (
 ) => {
   const queryParams = route?.queryParams;
   const searchString = queryParams['searchString'];
-  const page = parseInt(queryParams['page'], 10) || 1;
+  const page = parseInt(queryParams['page'], 10) || 0;
   const pageSize = parseInt(queryParams['pageSize'], 10) || 10;
   const stateService = inject(StateService);
   return stateService.rxGetBlogs({ searchString, page, pageSize });
