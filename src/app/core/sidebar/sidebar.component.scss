@@ -1,10 +1,30 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+  // background-color: rgba(0, 0, 0, 0.1);
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
 .spacer {
   flex: 1 1 auto;
 }
 
 .search-container {
+  margin-left: 5px;
   margin-top: 1em;
-  margin-left: 40px; // Passt den oberen Abstand an
+  width: 90%;
 }
 
 .profileImage {
@@ -21,5 +41,5 @@
 }
 
 .add-blog {
-  margin-right: 30px;
+  margin-right: 1.5em;
 }

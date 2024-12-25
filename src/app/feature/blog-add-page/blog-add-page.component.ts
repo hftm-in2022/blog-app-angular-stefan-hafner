@@ -1,11 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { HeaderComponent } from '../../core/header/header.component';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatCard, MatCardTitle } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -17,11 +16,11 @@ import { StateService } from '../../core/service/state.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-blog-add-page',
   imports: [
-    HeaderComponent,
     ReactiveFormsModule,
     MatFormField,
     MatCard,
@@ -38,16 +37,20 @@ import { Location } from '@angular/common';
   styleUrl: './blog-add-page.component.scss',
   standalone: true,
 })
-export class BlogAddPageComponent {
-  blogForm: FormGroup;
-  //  selectedFile: string | null = null;
-  // fileError: string | null = null;
-  imagePreview: string | ArrayBuffer | null = null;
+export class BlogAddPageComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
+
   blogBackendService = inject(BlogBackendService);
   stateService = inject(StateService);
   private router = inject(Router);
   private location = inject(Location);
+
+  blogForm: FormGroup;
+  //  selectedFile: string | null = null;
+  // fileError: string | null = null;
   isSubmitting = this.stateService.isSubmitting;
+
+  imagePreview: string | ArrayBuffer | null = null;
 
   constructor(private fb: FormBuilder) {
     const randomId = Math.floor(Math.random() * 1084) + 1;
@@ -69,11 +72,14 @@ export class BlogAddPageComponent {
       content: ['', [Validators.required, Validators.minLength(10)]],
     });
 
-    this.blogForm.get('picUrl')?.valueChanges.subscribe((value: string) => {
-      if (value) {
-        this.imagePreview = value;
-      }
-    });
+    this.blogForm
+      .get('picUrl')
+      ?.valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value: string) => {
+        if (value) {
+          this.imagePreview = value;
+        }
+      });
   }
 
   onSubmit(): void {
@@ -91,16 +97,19 @@ export class BlogAddPageComponent {
                   */
       this.stateService.setSubmittingState();
 
-      this.blogBackendService.createBlogEntry(payload).subscribe({
-        next: (response) => {
-          console.log('Blog entry successfully created:', response);
-          this.stateService.setSubmitSuccess();
-        },
-        error: (err) => {
-          console.error('Error when creating the blog entry:', err);
-          this.stateService.setSubmitError(err);
-        },
-      });
+      this.blogBackendService
+        .createBlogEntry(payload)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (response) => {
+            console.log('Blog entry successfully created:', response);
+            this.stateService.setSubmitSuccess();
+          },
+          error: (err) => {
+            console.error('Error when creating the blog entry:', err);
+            this.stateService.setSubmitError(err);
+          },
+        });
     }
   }
 
@@ -122,6 +131,11 @@ export class BlogAddPageComponent {
     } else {
       this.router.navigate(['/default-route']);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /*

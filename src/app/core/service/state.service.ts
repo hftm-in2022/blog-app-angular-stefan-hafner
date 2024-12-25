@@ -26,6 +26,22 @@ interface BlogState {
   providedIn: 'root',
 })
 export class StateService {
+  // Sidenav States
+  private sidenavInfoSource = new BehaviorSubject<{
+    title: string;
+    isOverview: boolean;
+  }>({
+    title: 'Default',
+    isOverview: false,
+  });
+
+  sidenavInfo$ = this.sidenavInfoSource.asObservable();
+
+  updateSidenavInfo(title: string, isOverview: boolean) {
+    this.sidenavInfoSource.next({ title, isOverview });
+  }
+
+  // Blog States
   #BlogbackendService = inject(BlogBackendService);
 
   #state = signal<BlogState>({

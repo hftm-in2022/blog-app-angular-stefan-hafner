@@ -1,0 +1,65 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <mat-toolbar>{{ sidenavTitle }}</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item href="#">Startpage</a>
+      @if (isOverview) {
+        <mat-form-field appearance="outline" class="search-container">
+          <mat-label>Search a Blog</mat-label>
+          <input matInput placeholder="Search" [(ngModel)]="searchString" />
+        </mat-form-field>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      @if (isHandset$ | async) {
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()"
+        >
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+      }
+      <span class="spacer"></span>
+      @if (isAuthenticated().isAuthenticated) {
+        <button
+          mat-button
+          class="add-blog"
+          aria-label="Create a new Blog button"
+          (click)="navigateToNewBlog()"
+        >
+          Create a new Blog
+        </button>
+
+        <button
+          mat-icon-button
+          class="example-icon logout-icon"
+          aria-label="Logout button"
+          (click)="logout()"
+        >
+          <mat-icon>logout</mat-icon>
+        </button>
+      } @else {
+        <button
+          mat-icon-button
+          class="example-icon login-icon"
+          aria-label="Login button"
+          (click)="login()"
+        >
+          <mat-icon>login</mat-icon>
+        </button>
+      }
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

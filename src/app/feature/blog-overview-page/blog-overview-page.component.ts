@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnInit,
+  OnInit, OnDestroy,
 } from '@angular/core';
 import {
   BlogEntry,
@@ -12,12 +12,12 @@ import {
 import { AsyncPipe } from '@angular/common';
 import { BlogCardComponent } from '../../shared/blog-card/blog-card.component';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { HeaderComponent } from '../../core/header/header.component';
-import { map } from 'rxjs';
+import { map, Subject, takeUntil } from 'rxjs';
 import { StateService } from '../../core/service/state.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatPaginator } from '@angular/material/paginator';
 import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.service';
+import { SidebarComponent } from '../../core/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-blog-overview-page',
@@ -25,16 +25,18 @@ import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.
   imports: [
     AsyncPipe,
     BlogCardComponent,
-    HeaderComponent,
     RouterLink,
     MatProgressSpinner,
     MatPaginator,
+    SidebarComponent,
   ],
   templateUrl: './blog-overview-page.component.html',
   styleUrl: './blog-overview-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BlogOverviewPageComponent implements OnInit {
+export class BlogOverviewPageComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
   blogBackendService = inject(BlogBackendService);
@@ -52,12 +54,21 @@ export class BlogOverviewPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data
-      .pipe(map((data) => data['blog']))
+      .pipe(
+        map((data) => data['blog']),
+        takeUntil(this.destroy$),
+      )
       .subscribe((response: BlogEntryOverviewResponse) => {
         this.totalItems = response.totalCount;
         this.pageSize = response.pageSize;
         this.currentPage = response.pageIndex;
       });
+    this.stateService.updateSidenavInfo('Blog Overview', true);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onNextPage(event: { pageIndex: number; pageSize: number }): void {
@@ -66,6 +77,7 @@ export class BlogOverviewPageComponent implements OnInit {
 
     // Extract query parameters and update navigation
     this.activatedRoute.queryParams
+      .pipe(takeUntil(this.destroy$))
       .subscribe((params) => {
         const searchString = params['searchString'] || null; // Use existing searchString if available
 
@@ -89,17 +101,23 @@ export class BlogOverviewPageComponent implements OnInit {
   }
 
   handleLike(blog: BlogEntryOverview | BlogEntry) {
-    this.blogBackendService.likeBlogEntry(blog.id).subscribe(() => {
-      blog.likedByMe = true;
-    });
+    this.blogBackendService
+      .likeBlogEntry(blog.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        blog.likedByMe = true;
+      });
 
     blog.likedByMe = true;
   }
 
   handleUnlike(blog: BlogEntryOverview | BlogEntry) {
-    this.blogBackendService.unlikeBlogEntry(blog.id).subscribe(() => {
-      blog.likedByMe = false;
-    });
+    this.blogBackendService
+      .unlikeBlogEntry(blog.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        blog.likedByMe = false;
+      });
     blog.likedByMe = false;
   }
 }

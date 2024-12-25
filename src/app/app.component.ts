@@ -3,8 +3,8 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { BlogCardComponent } from './shared/blog-card/blog-card.component';
 import { BlogOverviewPageComponent } from './feature/blog-overview-page/blog-overview-page.component';
-import { HeaderComponent } from './core/header/header.component';
 import { AuthService } from './core/service/auth/auth.service';
+import { SidebarComponent } from './core/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +14,7 @@ import { AuthService } from './core/service/auth/auth.service';
     AsyncPipe,
     BlogCardComponent,
     BlogOverviewPageComponent,
-    HeaderComponent,
+    SidebarComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

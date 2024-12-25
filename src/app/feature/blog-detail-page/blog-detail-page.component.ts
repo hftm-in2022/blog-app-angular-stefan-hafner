@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { BlogEntry, BlogEntryOverview } from '../../core/model/blog-entry';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
@@ -6,25 +6,21 @@ import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BlogCardComponent } from '../../shared/blog-card/blog-card.component';
 import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.service';
-import { HeaderComponent } from '../../core/header/header.component';
 import { StateService } from '../../core/service/state.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { AuthService } from '../../core/service/auth/auth.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-blog-detail-page',
   standalone: true,
-  imports: [
-    DatePipe,
-    FormsModule,
-    BlogCardComponent,
-    HeaderComponent,
-    MatProgressSpinner,
-  ],
+  imports: [DatePipe, FormsModule, BlogCardComponent, MatProgressSpinner],
   templateUrl: './blog-detail-page.component.html',
   styleUrl: './blog-detail-page.component.scss',
 })
-export class BlogDetailPageComponent implements OnInit {
+export class BlogDetailPageComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   blogEntry!: BlogEntry;
   blogBackendService = inject(BlogBackendService);
   authService = inject(AuthService);
@@ -43,41 +39,59 @@ export class BlogDetailPageComponent implements OnInit {
     // Access to the data loaded by the resolver
     this.blogEntry = this.route.snapshot.data['blog'];
     this.blogEntry.comments = this.blogEntry.comments || [];
+    this.stateService.updateSidenavInfo('Blog Detail', false);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   handleLike(blog: BlogEntryOverview | BlogEntry) {
-    this.blogBackendService.likeBlogEntry(blog.id).subscribe(() => {
-      blog.likedByMe = true;
-    });
+    this.blogBackendService
+      .likeBlogEntry(blog.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        blog.likedByMe = true;
+      });
 
     blog.likedByMe = true;
   }
 
   handleUnlike(blog: BlogEntryOverview | BlogEntry) {
-    this.blogBackendService.unlikeBlogEntry(blog.id).subscribe(() => {
-      blog.likedByMe = false;
-    });
+    this.blogBackendService
+      .unlikeBlogEntry(blog.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        blog.likedByMe = false;
+      });
 
     blog.likedByMe = false;
   }
 
   handleAddComment(comment: string) {
-    this.blogBackendService.addComment(comment, this.blogEntry.id).subscribe({
-      next: () => {
-        // Nach erfolgreichem Hinzufügen des Kommentars den gesamten Blog neu laden
-        this.blogBackendService.getBlogDetail(this.blogEntry.id).subscribe({
-          next: (updatedBlogEntry) => {
-            this.blogEntry = updatedBlogEntry; // Blog-Eintrag mit neuen Kommentaren aktualisieren
-          },
-          error: (err) => {
-            console.error('Failed to load updated blog entry:', err);
-          },
-        });
-      },
-      error: (err) => {
-        console.error('Failed to add comment:', err);
-      },
-    });
+    this.blogBackendService
+      .addComment(comment, this.blogEntry.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          // Nach erfolgreichem Hinzufügen des Kommentars den gesamten Blog neu laden
+          this.blogBackendService
+            .getBlogDetail(this.blogEntry.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: (updatedBlogEntry) => {
+                this.blogEntry = updatedBlogEntry; // Blog-Eintrag mit neuen Kommentaren aktualisieren
+              },
+              error: (err) => {
+                console.error('Failed to load updated blog entry:', err);
+              },
+            });
+        },
+        error: (err) => {
+          console.error('Failed to add comment:', err);
+        },
+      });
   }
 
   handleBackButton() {
@@ -89,9 +103,12 @@ export class BlogDetailPageComponent implements OnInit {
   }
 
   handleDelete(blogId: number) {
-    this.blogBackendService.deleteBlogEntry(blogId).subscribe(() => {
-      this.stateService.rxGetBlogs();
-    });
+    this.blogBackendService
+      .deleteBlogEntry(blogId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.stateService.rxGetBlogs();
+      });
     this.handleBackButton();
   }
 }
