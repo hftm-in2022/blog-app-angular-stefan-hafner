@@ -1,56 +1,72 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
-  model,
   effect,
   inject,
+  model,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
-import { MatToolbar } from '@angular/material/toolbar';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { AsyncPipe } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { distinctUntilChanged, Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { distinctUntilChanged } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AsyncPipe, Location } from '@angular/common';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 import { StateService } from '../service/state.service';
 import { AuthService } from '../service/auth/auth.service';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+  selector: 'app-sidebar',
+  templateUrl: './sidebar.component.html',
+  styleUrl: './sidebar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    MatToolbar,
-    MatIconModule,
-    MatIconButton,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    AsyncPipe,
-    MatButton,
-  ],
   standalone: true,
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
+    AsyncPipe,
+    RouterOutlet,
+    FormsModule,
+    MatFormField,
+    MatInput,
+    MatLabel,
+  ],
 })
-export class HeaderComponent {
-  @Input() isOverview = false;
+export class SidebarComponent implements OnInit {
+  @ViewChild('drawer') drawer!: MatSidenav;
 
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
-  location = inject(Location);
   stateService = inject(StateService);
   authService = inject(AuthService);
   readonly oidcSecurityService = inject(OidcSecurityService);
+  private breakpointObserver = inject(BreakpointObserver);
 
   searchString = model<string>('');
   loading = this.stateService.loading;
-
   readonly isAuthenticated = this.oidcSecurityService.authenticated;
-  readonly userData = this.oidcSecurityService.userData;
+
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
+    .pipe(
+      map((result) => result.matches),
+      shareReplay(),
+    );
+
+  sidenavTitle = 'Menu';
+  isOverview = false;
 
   constructor() {
     this.activatedRoute.queryParamMap
@@ -60,6 +76,7 @@ export class HeaderComponent {
       });
 
     effect(() => {
+      this.searchString();
       if (this.isOverview) {
         const filter = {
           searchString: this.searchString(),
@@ -86,6 +103,14 @@ export class HeaderComponent {
       );
     });
   }
+
+  ngOnInit() {
+    this.stateService.sidenavInfo$.subscribe((info) => {
+      this.sidenavTitle = info.title;
+      this.isOverview = info.isOverview || false;
+    });
+  }
+
   login() {
     this.authService.login();
     console.log('click on login');
@@ -98,5 +123,11 @@ export class HeaderComponent {
 
   navigateToNewBlog() {
     this.router.navigate(['/blog-add']);
+  }
+
+  closeSideNav() {
+    if (this.drawer?.mode === 'over') {
+      this.drawer.close();
+    }
   }
 }
