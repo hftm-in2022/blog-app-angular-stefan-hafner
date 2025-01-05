@@ -23,6 +23,8 @@ import { MatInput } from '@angular/material/input';
 import { StateService } from '../service/state.service';
 import { AuthService } from '../service/auth/auth.service';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-sidebar',
@@ -42,6 +44,9 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
     MatFormField,
     MatInput,
     MatLabel,
+    MatMenuTrigger,
+    MatTooltip,
+    MatMenu,
   ],
 })
 export class SidebarComponent implements OnInit {
