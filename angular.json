@@ -18,7 +18,7 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "statsJson": true,
-            "outputPath": "dist/blog-app-angular",
+            "outputPath": "dist/blog-app-angular/browser",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -36,12 +36,7 @@
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.scss"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -72,6 +67,32 @@
             }
           },
           "defaultConfiguration": "production"
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/blog-app-angular/server",
+            "main": "src/main.server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "all"
+            },
+            "development": {
+              "sourceMap": true
+            }
+          }
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "outputPath": "dist/blog-app-angular/browser",
+            "index": "dist/blog-app-angular/browser/index.html",
+            "routes": [
+              "/"
+            ]
+          }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
