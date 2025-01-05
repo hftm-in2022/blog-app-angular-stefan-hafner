@@ -1,5 +1,5 @@
-@import "../../app.component.scss";
-@import "../../shared/blog-card/blog-card.component.scss";
+@use "../../app.component.scss";
+@use "../../shared/blog-card/blog-card.component.scss";
 
 .blog-card {
   // Reuse styling from blog-card

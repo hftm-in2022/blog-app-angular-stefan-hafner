@@ -1,4 +1,4 @@
-@import "../../shared/blog-card/blog-card.component.scss"; // Import shared styles if needed
+@use "../../shared/blog-card/blog-card.component.scss"; // Import shared styles if needed
 
 .blog-card {
   // Reuse styling from blog-card
