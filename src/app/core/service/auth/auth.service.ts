@@ -48,7 +48,9 @@ export class AuthService {
   getUserInitials(): string {
     const user = this.getUser();
     if (user) {
-      return user.preferred_username
+      const username = user.preferred_username;
+      const localPart = username.split('@')[0];
+      return localPart
         .split(/[._-]/)
         .map((token: string) => token.charAt(0))
         .join('');

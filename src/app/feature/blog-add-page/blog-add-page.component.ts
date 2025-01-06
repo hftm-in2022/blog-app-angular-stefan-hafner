@@ -96,7 +96,6 @@ export class BlogAddPageComponent implements OnDestroy {
                         }
                   */
       this.stateService.setSubmittingState();
-
       this.blogBackendService
         .createBlogEntry(payload)
         .pipe(takeUntil(this.destroy$))
@@ -104,6 +103,7 @@ export class BlogAddPageComponent implements OnDestroy {
           next: (response) => {
             console.log('Blog entry successfully created:', response);
             this.stateService.setSubmitSuccess();
+            this.router.navigate(['blog-overview']);
           },
           error: (err) => {
             console.error('Error when creating the blog entry:', err);

@@ -65,21 +65,6 @@ export class BlogBackendService {
       ();
   }
 
-  /*
-    createBlogEntry(formData: FormData): Observable<BlogEntry> {
-      console.log('Creating new blog entry...');
-
-      return this.http.post<BlogEntry>(
-          `${environment.backendUrl}/entries`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${yourAuthToken}`,
-            },
-          }
-      );
-    }
-  */
   createBlogEntry(payload: NewBlogEntry): Observable<BlogEntry> {
     return this.http.post<BlogEntry>(
       `${environment.backendUrl}/entries`,

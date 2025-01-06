@@ -42,6 +42,7 @@ The application uses a CI/CD pipeline for automated deployment through GitHub Ac
 ### Deployment
 
 Deployment is triggered automatically when a push to the `main` branch occurs.
+Do you can see on `https://blue-cliff-0b8ec9103.5.azurestaticapps.net/`
 
 ## 3. Angular File Structure
 
@@ -68,7 +69,7 @@ src/
 
 The app separates components by function:
 
-- **Smart Components** (`app.component.ts`, `blog-overview-page.component.ts`): Handle logic, services, and state.
+- **Smart Components** (`app.component.ts`, `blog-overview-page.component.ts`, `blog-detail-page.component.ts`): Handle logic, services, and state.
 - **Dumb Components** (`blog-card.component.ts`): Purely presentational with `@Input()`/`@Output()`.
 
 ### 4.2 Redux-like State Management Pattern
@@ -78,14 +79,6 @@ State is managed in `state.service.ts` using:
 - **State Container:** `BehaviorSubject` and `signal` hold global state.
 - **Reducers:** Methods like `setLoadingState` and `setSubmitError` update state immutably.
 - **Async Actions:** `rxGetBlogs` fetches data via RxJS, mimicking Redux async actions.
-
-### 4.3 Model-View-Controller (MVC) Pattern
-
-The code follows MVC principles:
-
-- **Model:** `blog-entry.ts` (data structures).
-- **View:** Angular components (`sidebar.component.ts`).
-- **Controller:** Services and resolvers handle logic (`state.service.ts`).
 
 ## 5. Configurations
 

@@ -97,7 +97,7 @@ export class StateService {
   setSubmitSuccess() {
     this.#state.update((state) => ({
       ...state,
-      isLoading: false,
+      isSubmitting: false,
     }));
   }
 
