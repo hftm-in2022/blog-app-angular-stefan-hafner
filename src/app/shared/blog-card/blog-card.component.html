@@ -22,6 +22,18 @@
       </mat-card-header>
       <div class="title-group">
         <mat-card-title>{{ blog.title }}</mat-card-title>
+        @if (blog.createdByMe && !isOverview) {
+          <span class="goToDetailsPage-button">
+            <button
+              mat-icon-button
+              (click)="onDeleteBlog()"
+              class="button"
+              aria-label="Delete Blog"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </span>
+        }
       </div>
     } @else {
       <!-- Blog Title -->
@@ -52,7 +64,6 @@
         }
       </div>
     }
-
     <!-- Blog Content Preview -->
     @if (!isBlogEntry(blog) && isOverview) {
       <mat-card-content>
