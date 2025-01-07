@@ -1,4 +1,4 @@
-@import "../../app.component.scss";
+@use "../../app.component.scss" as *;
 
 .blog-card {
   margin-top: 0.7rem;

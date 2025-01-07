@@ -8,7 +8,6 @@ import {
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatCard, MatCardTitle } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
-import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.service';
 import { NewBlogEntry } from '../../core/model/blog-entry';
@@ -28,7 +27,6 @@ import { Subject, takeUntil } from 'rxjs';
     MatLabel,
     MatCardTitle,
     MatInputModule,
-    MatIcon,
     MatLabel,
     MatButton,
     MatProgressSpinner,

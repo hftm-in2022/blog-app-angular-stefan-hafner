@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { BlogEntry, BlogEntryOverview } from '../../core/model/blog-entry';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
 import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BlogCardComponent } from '../../shared/blog-card/blog-card.component';
@@ -20,7 +19,7 @@ import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-blog-detail-page',
   standalone: true,
-  imports: [DatePipe, FormsModule, BlogCardComponent, MatProgressSpinner],
+  imports: [FormsModule, BlogCardComponent, MatProgressSpinner],
   templateUrl: './blog-detail-page.component.html',
   styleUrl: './blog-detail-page.component.scss',
 })

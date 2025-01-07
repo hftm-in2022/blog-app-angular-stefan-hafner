@@ -18,8 +18,6 @@ import { StateService } from '../../core/service/state.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatPaginator } from '@angular/material/paginator';
 import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.service';
-import { SidebarComponent } from '../../core/sidebar/sidebar.component';
-
 @Component({
   selector: 'app-blog-overview-page',
   standalone: true,
@@ -29,7 +27,6 @@ import { SidebarComponent } from '../../core/sidebar/sidebar.component';
     RouterLink,
     MatProgressSpinner,
     MatPaginator,
-    SidebarComponent,
   ],
   templateUrl: './blog-overview-page.component.html',
   styleUrl: './blog-overview-page.component.scss',
