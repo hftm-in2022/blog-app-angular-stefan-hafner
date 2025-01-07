@@ -5,6 +5,10 @@
   },
   "routes": [
     {
+      "route": "/silent-renew.html",
+      "serve": "/silent-renew.html"
+    },
+    {
       "route": "/blog-overview",
       "rewrite": "/index.html"
     },
@@ -13,8 +17,8 @@
       "rewrite": "/index.html"
     },
     {
-      "route": "/silent-renew.html",
-      "serve": "/silent-renew.html"
+      "route": "/*",
+      "rewrite": "/index.html"
     }
   ],
   "globalHeaders": {
