@@ -5,11 +5,7 @@
   },
   "routes": [
     {
-      "route": "/blog-overview",
-      "rewrite": "/index.html"
-    },
-    {
-      "route": "/blog-overview/*",
+      "route": "/*",
       "rewrite": "/index.html"
     },
     {

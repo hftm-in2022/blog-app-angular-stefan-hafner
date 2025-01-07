@@ -6,6 +6,11 @@ import { isAuthenticatedGuard } from './core/service/auth/isAuthenticated.guard'
 
 export const routes: Routes = [
   {
+    path: '', // Default route, redirects to the blog overview page
+    redirectTo: '/blog-overview',
+    pathMatch: 'full',
+  },
+  {
     path: 'blog-overview', // Route for the blog overview page
     loadComponent: () =>
       import('./feature/blog-overview-page/blog-overview-page.component').then(
@@ -33,10 +38,5 @@ export const routes: Routes = [
   {
     path: '**', // Fallback route for undefined paths, redirects to blog overview
     redirectTo: '/blog-overview',
-  },
-  {
-    path: '', // Default route, redirects to the blog overview page
-    redirectTo: '/blog-overview',
-    pathMatch: 'full',
   },
 ];
