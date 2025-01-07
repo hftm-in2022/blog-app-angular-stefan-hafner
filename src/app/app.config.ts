@@ -5,7 +5,6 @@ import {
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
 import { BlogBackendService } from './core/service/blogBackend/blog-backend.service';
 import {
   HTTP_INTERCEPTORS,
@@ -29,7 +28,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
-    provideClientHydration(),
     provideHttpClient(withInterceptors([loggingInterceptor]), withFetch()),
     BlogBackendService,
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
