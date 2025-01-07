@@ -11,7 +11,11 @@
     workflow_dispatch:
 
   jobs:
+    codeQL:
+      uses: hftm-in2022/blog-app/.github/workflows/codeql.yml@main
+
     build:
+      needs: codeQL
       runs-on: ubuntu-latest
       name: Build Job
       strategy:
