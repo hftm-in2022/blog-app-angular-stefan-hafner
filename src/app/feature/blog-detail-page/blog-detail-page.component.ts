@@ -1,7 +1,12 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { BlogEntry, BlogEntryOverview } from '../../core/model/blog-entry';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
 import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BlogCardComponent } from '../../shared/blog-card/blog-card.component';
@@ -14,7 +19,7 @@ import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-blog-detail-page',
   standalone: true,
-  imports: [DatePipe, FormsModule, BlogCardComponent, MatProgressSpinner],
+  imports: [FormsModule, BlogCardComponent, MatProgressSpinner],
   templateUrl: './blog-detail-page.component.html',
   styleUrl: './blog-detail-page.component.scss',
 })
@@ -24,6 +29,7 @@ export class BlogDetailPageComponent implements OnInit, OnDestroy {
   blogEntry!: BlogEntry;
   blogBackendService = inject(BlogBackendService);
   authService = inject(AuthService);
+  cdr = inject(ChangeDetectorRef);
 
   stateService = inject(StateService);
   loading = this.stateService.loading;
@@ -51,22 +57,50 @@ export class BlogDetailPageComponent implements OnInit, OnDestroy {
     this.blogBackendService
       .likeBlogEntry(blog.id)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        blog.likedByMe = true;
+      .subscribe({
+        next: () => {
+          this.blogBackendService
+            .getBlogDetail(this.blogEntry.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: (updatedBlogEntry) => {
+                this.blogEntry = updatedBlogEntry;
+                this.cdr.detectChanges();
+              },
+              error: (err) => {
+                console.error('Failed to load updated blog entry:', err);
+              },
+            });
+        },
+        error: (err) => {
+          console.error('Failed to like blog entry:', err);
+        },
       });
-
-    blog.likedByMe = true;
   }
 
   handleUnlike(blog: BlogEntryOverview | BlogEntry) {
     this.blogBackendService
       .unlikeBlogEntry(blog.id)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        blog.likedByMe = false;
+      .subscribe({
+        next: () => {
+          this.blogBackendService
+            .getBlogDetail(this.blogEntry.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: (updatedBlogEntry) => {
+                this.blogEntry = updatedBlogEntry;
+                this.cdr.detectChanges();
+              },
+              error: (err) => {
+                console.error('Failed to load updated blog entry:', err);
+              },
+            });
+        },
+        error: (err) => {
+          console.error('Failed to unlike blog entry:', err);
+        },
       });
-
-    blog.likedByMe = false;
   }
 
   handleAddComment(comment: string) {
@@ -82,6 +116,7 @@ export class BlogDetailPageComponent implements OnInit, OnDestroy {
             .subscribe({
               next: (updatedBlogEntry) => {
                 this.blogEntry = updatedBlogEntry; // Blog-Eintrag mit neuen Kommentaren aktualisieren
+                this.cdr.detectChanges();
               },
               error: (err) => {
                 console.error('Failed to load updated blog entry:', err);

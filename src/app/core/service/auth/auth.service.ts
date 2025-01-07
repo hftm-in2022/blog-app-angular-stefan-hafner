@@ -45,6 +45,19 @@ export class AuthService {
     return this.loginResponse$.getValue().userData;
   }
 
+  getUserInitials(): string {
+    const user = this.getUser();
+    if (user) {
+      const username = user.preferred_username;
+      const localPart = username.split('@')[0];
+      return localPart
+        .split(/[._-]/)
+        .map((token: string) => token.charAt(0))
+        .join('');
+    }
+    return '';
+  }
+
   // Method to trigger login
   login(): void {
     this.oidcSecurityService.authorize();

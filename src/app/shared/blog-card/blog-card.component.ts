@@ -109,10 +109,12 @@ export class BlogCardComponent {
 
   onLikeClicked() {
     this.like.emit(this.blog); // Trigger event instead of updating state
+    //this.blog.likes++; // Update state
   }
 
   onUnlikeClicked() {
     this.unlike.emit(this.blog); // Trigger event instead of updating state
+    //this.blog.likes--; // Update state
   }
 
   submitComment() {

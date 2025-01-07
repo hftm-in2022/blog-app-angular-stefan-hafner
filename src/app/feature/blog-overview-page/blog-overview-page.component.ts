@@ -2,7 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnInit, OnDestroy,
+  OnInit,
+  OnDestroy,
 } from '@angular/core';
 import {
   BlogEntry,
@@ -17,8 +18,6 @@ import { StateService } from '../../core/service/state.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatPaginator } from '@angular/material/paginator';
 import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.service';
-import { SidebarComponent } from '../../core/sidebar/sidebar.component';
-
 @Component({
   selector: 'app-blog-overview-page',
   standalone: true,
@@ -28,7 +27,6 @@ import { SidebarComponent } from '../../core/sidebar/sidebar.component';
     RouterLink,
     MatProgressSpinner,
     MatPaginator,
-    SidebarComponent,
   ],
   templateUrl: './blog-overview-page.component.html',
   styleUrl: './blog-overview-page.component.scss',
@@ -40,8 +38,8 @@ export class BlogOverviewPageComponent implements OnInit, OnDestroy {
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
   blogBackendService = inject(BlogBackendService);
-
   stateService = inject(StateService);
+
   loading = this.stateService.loading;
   blogOverview$ = this.activatedRoute.data.pipe(
     map((data) => data['blog']), // Das gesamte BlogEntryOverviewResponse-Objekt
@@ -106,9 +104,11 @@ export class BlogOverviewPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         blog.likedByMe = true;
-      });
+      })
+      .unsubscribe(); // Unsubscribe directly to avoid memory leaks;
 
     blog.likedByMe = true;
+    blog.likes++;
   }
 
   handleUnlike(blog: BlogEntryOverview | BlogEntry) {
@@ -117,7 +117,9 @@ export class BlogOverviewPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         blog.likedByMe = false;
-      });
+      })
+      .unsubscribe(); // Unsubscribe directly to avoid memory leaks;
     blog.likedByMe = false;
+    blog.likes--;
   }
 }

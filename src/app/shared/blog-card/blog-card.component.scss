@@ -1,4 +1,4 @@
-@import "../../app.component.scss";
+@use "../../app.component.scss" as *;
 
 .blog-card {
   margin-top: 0.7rem;
@@ -18,16 +18,16 @@
     margin-right: auto;
   }
   @media screen and (min-width: 861px) {
-    width: 600px;
+    width: 653px;
     margin-left: auto;
     margin-right: auto;
   }
-  @media screen and (min-width: 1061px) {
+  @media screen and (min-width: 1095px) {
     width: 840px;
     margin-left: auto;
     margin-right: auto;
   }
-  @media screen and (min-width: 1481px) {
+  @media screen and (min-width: 1508px) {
     width: 1260px;
     margin-left: auto;
     margin-right: auto;
