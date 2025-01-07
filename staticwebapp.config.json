@@ -1,0 +1,40 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/static/*", "/favicon.ico"]
+  },
+  "routes": [
+    {
+      "route": "/silent-renew.html",
+      "serve": "/silent-renew.html"
+    },
+    {
+      "route": "/blog-overview",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/blog-overview/*",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/blog-detail/*",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/blog-add",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/*",
+      "rewrite": "/index.html"
+    }
+  ],
+  "globalHeaders": {
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://blue-cliff-0b8ec9103-67.westeurope.5.azurestaticapps.net https://d-cap-keyclaok.kindbay-711f60b2.westeurope.azurecontainerapps.io https://d-cap-blog-backend.whitepond-b96fee4b.westeurope.azurecontainerapps.io;"
+  },
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html"
+    }
+  }
+}
