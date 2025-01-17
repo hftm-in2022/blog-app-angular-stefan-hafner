@@ -57,12 +57,12 @@ export class BlogDetailPageComponent implements OnInit, OnDestroy {
     this.blogBackendService
       .likeBlogEntry(blog.id)
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
+      .subscribe({  
         next: () => {
           this.blogBackendService
             .getBlogDetail(this.blogEntry.id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
+            .subscribe({  // subscribe innerhalb subscribe unbedingt vermeiden
               next: (updatedBlogEntry) => {
                 this.blogEntry = updatedBlogEntry;
                 this.cdr.detectChanges();
@@ -113,7 +113,7 @@ export class BlogDetailPageComponent implements OnInit, OnDestroy {
           this.blogBackendService
             .getBlogDetail(this.blogEntry.id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
+            .subscribe({ // subscribe innerhalb subscribe
               next: (updatedBlogEntry) => {
                 this.blogEntry = updatedBlogEntry; // Blog-Eintrag mit neuen Kommentaren aktualisieren
                 this.cdr.detectChanges();

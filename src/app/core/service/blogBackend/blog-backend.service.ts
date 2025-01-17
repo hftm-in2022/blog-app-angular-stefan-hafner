@@ -28,19 +28,19 @@ export class BlogBackendService {
     if (searchString) {
       params = params.set('searchstring', searchString);
     }
-    console.log('Fetching blog entries with search string:', searchString);
+    console.log('Fetching blog entries with search string:', searchString);  // bitte keine logs in produktion 
     const debugUrl = `${environment.backendUrl}/entries?${params.toString()}`;
     console.log('Generated URL:', debugUrl);
     return this.http
       .get<BlogEntryOverviewResponse>(`${environment.backendUrl}/entries`, {
         params,
         headers: {
-          Authorization: `Bearer ${this.authService.getToken()}`,
+          Authorization: `Bearer ${this.authService.getToken()}`,  // das wird durch den Interceptor der lib und Secure Routes automatisch gemacht
           'Content-Type': 'application/json',
         },
       })
       .pipe(
-        // delay(Math.floor(Math.random() * 1000)), // Zum Testen des Loading Spinners Verzögerung zwischen 0 und 1000 ms
+        // delay(Math.floor(Math.random() * 1000)), // Zum Testen des Loading Spinners Verzögerung zwischen 0 und 1000 ms  // kein auskommentierten Code bitte
         map((response) => ({
           data: response.data,
           pageIndex: response.pageIndex,

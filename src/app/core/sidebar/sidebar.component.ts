@@ -77,7 +77,7 @@ export class SidebarComponent implements OnInit {
     this.activatedRoute.queryParamMap
       .pipe(distinctUntilChanged())
       .subscribe((params) => {
-        this.searchString.set(params.get('searchString') || '');
+        this.searchString.set(params.get('searchString') || '');  // subscribe ohne unsubscribe, ok, sidebar wird immer dargestellt, ich würde es aber trotzdem machen
       });
 
     effect(() => {
@@ -110,7 +110,7 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.stateService.sidenavInfo$.subscribe((info) => {
+    this.stateService.sidenavInfo$.subscribe((info) => {  // subscribe ohne unsubscribe?
       this.sidenavTitle = info.title;
       this.isOverview = info.isOverview || false;
     });

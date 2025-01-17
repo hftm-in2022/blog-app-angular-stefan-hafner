@@ -4,9 +4,9 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class SidenavStateService {
+export class SidenavStateService { // wird das benutzt?
   // Sidenav States
-  private sidenavInfoSource = new BehaviorSubject<{
+  private sidenavInfoSource = new BehaviorSubject<{   // warum kein signal
     title: string;
     isOverview: boolean;
   }>({
@@ -17,7 +17,7 @@ export class SidenavStateService {
   sidenavInfo$ = this.sidenavInfoSource.asObservable();
 
   // Update Method
-  updateSidenavInfo(title: string, isOverview: boolean) {
+  updateSidenavInfo(title: string, isOverview: boolean) {  
     this.sidenavInfoSource.next({ title, isOverview });
   }
 }

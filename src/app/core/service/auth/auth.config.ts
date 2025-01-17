@@ -15,7 +15,7 @@ const silentRenewUrl = environment.production
 
 export const authConfig: PassedInitialConfig = {
   config: {
-    authority: `${environment.authUrl}/realms/blog`,
+    authority: `${environment.authUrl}/realms/blog`,  // warum nicht die auth url mit /realms/blog
     redirectUrl: redirectUrl,
     postLogoutRedirectUri: postLogoutRedirectUri,
     clientId: 'spa-blog',

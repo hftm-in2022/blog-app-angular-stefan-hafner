@@ -142,7 +142,7 @@ export class StateService {
 
   rxGetBlogDetail(id: number): Observable<BlogEntry> {
     // Local state for the last request
-    const blogDetailId$ = new BehaviorSubject<number>(id);
+    const blogDetailId$ = new BehaviorSubject<number>(id);  // warum hier ein BehaviorSubject? Bei jedem Call wird ein neues Subject erstellt!
 
     return blogDetailId$.pipe(
       debounceTime(200), // Wait time for rapid changes

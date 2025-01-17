@@ -1,6 +1,6 @@
 import { Comment } from './comment';
 
-export interface BaseBlogEntry {
+export interface BaseBlogEntry { // bitte typen dort deklarieren wo sie benutzt werden und keine interfaces
   id: number;
   title: string;
   author: string;

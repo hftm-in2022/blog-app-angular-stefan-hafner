@@ -75,7 +75,7 @@ export interface NewComment {
 export class BlogCardComponent {
   //cardIndex = input<number>;
   //isOverview = input.required<boolean>();
-  @Input({ required: true }) blog!: BlogEntryOverview | BlogEntry;
+  @Input({ required: true }) blog!: BlogEntryOverview | BlogEntry;   // besser signal inputs benutzen
   @Input({ required: true }) isOverview = true;
   @Input() cardIndex?: number;
   @Output() like = new EventEmitter<BlogEntryOverview | BlogEntry>(); // Emit whole blog object for like
@@ -85,7 +85,7 @@ export class BlogCardComponent {
   @Output() backButton = new EventEmitter<void>(); // Emit back button event
   @Output() deleteBlog = new EventEmitter<number>();
 
-  activatedRoute = inject(ActivatedRoute);
+  activatedRoute = inject(ActivatedRoute);    // Dumb Component dürfen nur inputs haben, sonst sind sie nicht wiederverwendbar
   router = inject(Router);
   location = inject(Location);
   stateService = inject(StateService);

@@ -38,7 +38,7 @@ export class AuthService {
     this.loginResponse$.next(loginResponse);
   }
   getToken(): string | null {
-    return this.loginResponse$.getValue().accessToken;
+    return this.loginResponse$.getValue().accessToken;  // getValue sollte nicht benutzt werden, aber anstelle könnte ein Signal benutzt werden
   }
 
   getUser(): User | null {
@@ -75,7 +75,7 @@ export class AuthService {
     });
   }
 
-  handlePostLogin(): void {
+  handlePostLogin(): void { // was macht das?
     this.oidcSecurityService
       .checkAuth()
       .pipe(

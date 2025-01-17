@@ -9,7 +9,7 @@ export const isAuthenticatedGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   return authService.getLoginResponse().pipe(
-    take(1),
+    take(1),  // besser ein signal benutzen anstelle eines Observable und take(1). 
     map((loginResponse) => {
       if (!loginResponse.isAuthenticated) {
         authService.login();
@@ -20,7 +20,7 @@ export const isAuthenticatedGuard: CanActivateFn = () => {
         return true;
       }
 
-      return router.parseUrl('/blog-overview'); //redirect to blog-overview
+      return router.parseUrl('/blog-overview'); //redirect to blog-overview  // warum nicht router.navigate?
     }),
     catchError((error) => {
       console.error('Error in isAuthenticatedGuard:', error);

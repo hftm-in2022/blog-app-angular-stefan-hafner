@@ -124,7 +124,7 @@ export class BlogAddPageComponent implements OnDestroy {
   }
 
   onBack() {
-    if (window.history.length > 1) {
+    if (window.history.length > 1) {  // nicht direkt auf window zugreifen, sondern einen Service benutzen
       this.location.back();
     } else {
       this.router.navigate(['/default-route']);
