@@ -1,0 +1,50 @@
+{
+  "general": {
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "reset": "Reset",
+    "submit": "Submit"
+  },
+
+  "sidebar":{
+    "searchABlog": "Search a blog",
+    "search": "Search",
+    "startPage": "Start Page",
+    "login": "Login",
+    "loginAs": "You are logged in as",
+    "logout": "Logout",
+    "favorite": "Favorite",
+    "myFavoriteBlogs": "My Favorite Blogs",
+    "myAccount": "My account",
+    "createANewBlog": "Create a new blog",
+    "menu": "Menu"
+  },
+
+  "blogAddPage": {
+    "addNewBlogPost": "Add new blog post",
+    "picURL": "Picture URL",
+    "titleRequired": "Title is required",
+    "invalidURLFormat": "Invalid URL format",
+    "title": "Title",
+    "enterTitle": "Enter title",
+    "max100Characters": "Max 100 characters",
+    "content": "Content",
+    "enterContent": "Enter content",
+    "contentRequired": "Content is required",
+    "min10Characters": "Minimum 10 characters required."
+  },
+
+  "blogCard": {
+    "details": "Details",
+    "likes": "Likes: ",
+    "comments": "Comments: ",
+    "unlike": "Unlike",
+    "like": "Like",
+    "author": "Author: ",
+    "leaveAComment": "Leave a comment",
+    "noCommentsAvailable": "No comments available"
+  }
+
+}

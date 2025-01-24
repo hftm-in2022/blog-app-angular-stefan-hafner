@@ -1,0 +1,51 @@
+{
+  "general": {
+    "back": "Zurück",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "reset": "Zurücksetzen",
+    "submit": "Einreichen"
+
+  },
+
+  "sidebar": {
+    "searchABlog": "Einen Blog suchen",
+    "search": "Suche",
+    "startPage": "Startseite",
+    "login": "Anmelden",
+    "loginAs": "Du bist angemeldet als",
+    "logout": "Abmelden",
+    "favorite": "Favorit",
+    "myFavoriteBlogs": "Meine Lieblingsblogs",
+    "myAccount": "Mein Konto",
+    "createANewBlog": "Einen neuen Blog erstellen",
+    "menu": "Menü"
+  },
+
+  "blogAddPage": {
+    "addNewBlogPost": "Neuen Blogeintrag hinzufügen",
+    "picURL": "Bild-URL",
+    "titleRequired": "Titel ist erforderlich",
+    "invalidURLFormat": "Ungültiges URL-Format",
+    "title": "Titel",
+    "enterTitle": "Titel eingeben",
+    "max100Characters": "Maximal 100 Zeichen",
+    "content": "Inhalt",
+    "enterContent": "Inhalt eingeben",
+    "contentRequired": "Inhalt ist erforderlich",
+    "min10Characters": "Mindestens 10 Zeichen erforderlich."
+  },
+
+  "blogCard": {
+    "details": "Details",
+    "likes": "Likes: ",
+    "comments": "Kommentare: ",
+    "unlike": "Nicht mögen",
+    "like": "Mögen",
+    "author": "Autor: ",
+    "leaveAComment": "Kommentar hinterlassen",
+    "noCommentsAvailable": "Keine Kommentare verfügbar"
+  }
+}
+
