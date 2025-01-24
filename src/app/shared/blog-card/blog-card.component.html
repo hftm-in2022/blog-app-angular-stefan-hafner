@@ -46,7 +46,7 @@
               (click)="goToDetailsPage()"
               class="button"
             >
-              Details
+              {{ "blogCard.details" | translate }}
             </button>
           </span>
         }
@@ -76,8 +76,12 @@
     }
     <!-- Likes and Comments -->
     <div class="blog-stats">
-      <span class="likes">Likes: {{ blog.likes }}</span>
-      <span class="comments">Comments: {{ commentsCount() }}</span>
+      <span class="likes"
+        >{{ "blogCard.likes" | translate }} {{ blog.likes }}</span
+      >
+      <span class="comments"
+        >{{ "blogCard.comments" | translate }} {{ commentsCount() }}</span
+      >
     </div>
     <!-- User Actions and Status -->
 
@@ -85,24 +89,24 @@
       @if (isAuthenticated().isAuthenticated) {
         @if (!blog.likedByMe) {
           <button mat-raised-button (click)="onLikeClicked()" class="button">
-            Like
+            {{ "blogCard.like" | translate }}
           </button>
         }
         @if (blog.likedByMe) {
           <button mat-raised-button (click)="onUnlikeClicked()" class="button">
-            Unlike
+            {{ "blogCard.unlike" | translate }}
           </button>
         }
       }
       <!-- Author -->
       <mat-card-content class="author"
-        >Author: {{ blog.author }}
+        >{{ "blogCard.author" | translate }} {{ blog.author }}
       </mat-card-content>
     </div>
     @if (!isOverview) {
       <!-- Comment Section -->
       <div class="comments-section">
-        <h5 mat-subheader>Comments</h5>
+        <h5 mat-subheader>{{ "blogCard.comments" | translate }}</h5>
         @if (isBlogEntry(blog) && blog.comments.length) {
           <div>
             @for (comment of blog.comments; track comment) {
@@ -116,13 +120,13 @@
             }
           </div>
         } @else {
-          <p>No comments available.</p>
+          <p>{{ "blogCard.noCommentsAvailable" | translate }}</p>
         }
         @if (isAuthenticated().isAuthenticated) {
           <!-- Add Comment -->
           <div class="add-comment">
             <mat-form-field>
-              <mat-label>Leave a comment</mat-label>
+              <mat-label>{{ "blogCard.leaveAComment" | translate }}</mat-label>
               <textarea
                 matInput
                 #message
@@ -137,7 +141,7 @@
                 (click)="onBack()"
                 class="button"
               >
-                Back
+                {{ "general.back" | translate }}
               </button>
               <button
                 mat-raised-button
@@ -145,7 +149,7 @@
                 (click)="submitComment()"
                 class="button"
               >
-                Submit
+                {{ "general.submit" | translate }}
               </button>
             </mat-card-actions>
           </div>
@@ -158,7 +162,7 @@
                 (click)="onBack()"
                 class="button"
               >
-                Back
+                {{ "general.back" | translate }}
               </button>
             </mat-card-actions>
           </div>

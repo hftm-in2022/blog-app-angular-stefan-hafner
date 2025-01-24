@@ -2,9 +2,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  EventEmitter,
   inject,
+  Input,
   model,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -25,6 +28,7 @@ import { AuthService } from '../service/auth/auth.service';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -47,10 +51,13 @@ import { MatTooltip } from '@angular/material/tooltip';
     MatMenuTrigger,
     MatTooltip,
     MatMenu,
+    TranslatePipe,
   ],
 })
 export class SidebarComponent implements OnInit {
   @ViewChild('drawer') drawer!: MatSidenav;
+  @Output() languageChange = new EventEmitter<string>();
+  @Input() languages: string[] = [];
 
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
@@ -134,5 +141,9 @@ export class SidebarComponent implements OnInit {
     if (this.drawer?.mode === 'over') {
       this.drawer.close();
     }
+  }
+
+  changeLanguage(lang: string) {
+    this.languageChange.emit(lang);
   }
 }

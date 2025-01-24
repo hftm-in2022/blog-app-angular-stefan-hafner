@@ -16,6 +16,8 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
+import { MatListItem } from '@angular/material/list';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-blog-add-page',
@@ -30,6 +32,8 @@ import { Subject, takeUntil } from 'rxjs';
     MatLabel,
     MatButton,
     MatProgressSpinner,
+    MatListItem,
+    TranslatePipe,
   ],
   templateUrl: './blog-add-page.component.html',
   styleUrl: './blog-add-page.component.scss',

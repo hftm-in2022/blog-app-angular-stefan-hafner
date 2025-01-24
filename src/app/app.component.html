@@ -4,7 +4,10 @@
   </header>
 
   <main>
-    <app-sidebar></app-sidebar>
+    <app-sidebar
+      (languageChange)="changeLanguage($event)"
+      [languages]="languages"
+    ></app-sidebar>
     <!-- Dynamic content goes here -->
   </main>
 

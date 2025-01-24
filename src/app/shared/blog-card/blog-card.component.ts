@@ -18,6 +18,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StateService } from '../../core/service/state.service';
 import { AuthService } from '../../core/service/auth/auth.service';
 import { MatIcon } from '@angular/material/icon';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export interface BaseBlogEntry {
   id: number;
@@ -67,6 +68,7 @@ export interface NewComment {
     MatFormFieldModule,
     MatInputModule,
     MatIcon,
+    TranslatePipe,
   ],
   templateUrl: './blog-card.component.html',
   styleUrl: './blog-card.component.scss',

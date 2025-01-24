@@ -2,7 +2,9 @@
   <mat-spinner></mat-spinner>
 } @else {
   <mat-card class="blog-card" #container>
-    <mat-card-title>Add New Blog Post</mat-card-title>
+    <mat-card-title>{{
+      "blogAddPage.addNewBlogPost" | translate
+    }}</mat-card-title>
 
     <form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
       <!-- Image Upload
@@ -26,15 +28,15 @@
 
       <!-- Pic URL -->
       <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Pic URL</mat-label>
+        <mat-label>{{ "blogAddPage.picURL" | translate }}</mat-label>
         <input matInput formControlName="picUrl" />
         @if (blogForm.get("picUrl")?.invalid) {
           <mat-error>
             @if (blogForm.get("picUrl")?.hasError("required")) {
-              Title is required.
+              {{ "blogAddPage.titleRequired" | translate }}
             }
             @if (blogForm.get("picUrl")?.hasError("pattern")) {
-              Invalid URL format.
+              {{ "blogAddPage.invalidURLFormat" | translate }}
             }
           </mat-error>
         }
@@ -54,15 +56,19 @@
 
       <!-- Title Input -->
       <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Title</mat-label>
-        <input matInput formControlName="title" placeholder="Enter title" />
+        <mat-label>{{ "blogAddPage.title" | translate }}</mat-label>
+        <input
+          matInput
+          formControlName="title"
+          [placeholder]="'blogAddPage.enterTitle' | translate"
+        />
         @if (blogForm.get("title")?.invalid) {
           <mat-error>
             @if (blogForm.get("title")?.hasError("required")) {
-              Title is required.
+              {{ "blogAddPage.titleRequired" | translate }}
             }
             @if (blogForm.get("title")?.hasError("maxlength")) {
-              Max 100 characters.
+              {{ "blogAddPage.max100Characters" | translate }}
             }
           </mat-error>
         }
@@ -70,21 +76,21 @@
 
       <!-- Content Input -->
       <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Content</mat-label>
+        <mat-label>{{ "blogAddPage.content" | translate }}</mat-label>
         <textarea
           matInput
           #message
           formControlName="content"
-          placeholder="Enter content"
+          [placeholder]="'blogAddPage.enterContent' | translate"
           class="textarea"
         ></textarea>
         @if (blogForm.get("content")?.invalid) {
           <mat-error>
             @if (blogForm.get("content")?.hasError("required")) {
-              Content is required.
+              {{ "blogAddPage.contentRequired" | translate }}
             }
             @if (blogForm.get("content")?.hasError("minlength")) {
-              Minimum 10 characters required.
+              {{ "blogAddPage.min10Characters" | translate }}
             }
           </mat-error>
         }
@@ -98,7 +104,7 @@
           (click)="onBack()"
           class="button"
         >
-          Back
+          {{ "general.back" | translate }}
         </button>
         <button
           mat-raised-button
@@ -106,7 +112,7 @@
           color="warn"
           (click)="resetForm()"
         >
-          Reset
+          {{ "general.reset" | translate }}
         </button>
         <span class="spacer"></span>
         <button
@@ -116,7 +122,7 @@
           type="submit"
           [disabled]="blogForm.invalid"
         >
-          Submit
+          {{ "general.submit" | translate }}
         </button>
       </div>
     </form>
