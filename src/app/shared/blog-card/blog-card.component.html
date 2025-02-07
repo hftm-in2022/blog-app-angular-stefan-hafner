@@ -1,5 +1,5 @@
 @if (blog) {
-  <mat-card class="blog-card" #container>
+  <mat-card data-testid="blog-card" class="blog-card" #container>
     <!-- Header Section with Image -->
     @if (blog.headerImageUrl) {
       <mat-card-header class="header" [ngClass]="{ overview: isOverview }">
@@ -8,6 +8,7 @@
             [src]="blog.headerImageUrl"
             alt="Header Image"
             class="header-image"
+            data-testid="clickable-image"
             (click)="goToDetailsPage()"
             (keyup.enter)="goToDetailsPage()"
             tabindex="0"
@@ -21,13 +22,14 @@
         }
       </mat-card-header>
       <div class="title-group">
-        <mat-card-title>{{ blog.title }}</mat-card-title>
+        <mat-card-title data-testid="title">{{ blog.title }}</mat-card-title>
         @if (blog.createdByMe && !isOverview) {
           <span class="goToDetailsPage-button">
             <button
               mat-icon-button
               (click)="onDeleteBlog()"
               class="button"
+              data-testid="delete-button"
               aria-label="Delete Blog"
             >
               <mat-icon>delete</mat-icon>
@@ -38,7 +40,7 @@
     } @else {
       <!-- Blog Title -->
       <div class="title-group">
-        <mat-card-title>{{ blog.title }}</mat-card-title>
+        <mat-card-title data-testid="title">{{ blog.title }}</mat-card-title>
         @if (isOverview) {
           <span class="goToDetailsPage-button">
             <button
@@ -56,6 +58,7 @@
               mat-icon-button
               (click)="onDeleteBlog()"
               class="button"
+              data-testid="delete-button"
               aria-label="Delete Blog"
             >
               <mat-icon>delete</mat-icon>
@@ -76,8 +79,10 @@
     }
     <!-- Likes and Comments -->
     <div class="blog-stats">
-      <span class="likes">Likes: {{ blog.likes }}</span>
-      <span class="comments">Comments: {{ commentsCount() }}</span>
+      <span class="likes" data-testid="likes">Likes: {{ blog.likes }}</span>
+      <span class="comments" data-testid="comments"
+        >Comments: {{ commentsCount() }}</span
+      >
     </div>
     <!-- User Actions and Status -->
 
@@ -95,7 +100,7 @@
         }
       }
       <!-- Author -->
-      <mat-card-content class="author"
+      <mat-card-content class="author" data-testid="author"
         >Author: {{ blog.author }}
       </mat-card-content>
     </div>
@@ -106,7 +111,7 @@
         @if (isBlogEntry(blog) && blog.comments.length) {
           <div>
             @for (comment of blog.comments; track comment) {
-              <mat-card class="comment">
+              <mat-card class="comment" data-testid="commentCards">
                 <mat-card-header>
                   <strong>{{ comment.author }}</strong> -
                   {{ comment.createdAt | date }}
@@ -136,12 +141,14 @@
                 class="left-button"
                 (click)="onBack()"
                 class="button"
+                data-testid="back-button"
               >
                 Back
               </button>
               <button
                 mat-raised-button
                 class="right-button"
+                data-testid="submit-comment"
                 (click)="submitComment()"
                 class="button"
               >
@@ -155,6 +162,7 @@
               <button
                 mat-raised-button
                 class="left-button"
+                data-testid="back-button"
                 (click)="onBack()"
                 class="button"
               >

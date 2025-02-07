@@ -13,7 +13,6 @@ import { BlogCardComponent } from '../../shared/blog-card/blog-card.component';
 import { BlogBackendService } from '../../core/service/blogBackend/blog-backend.service';
 import { StateService } from '../../core/service/state.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { AuthService } from '../../core/service/auth/auth.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -28,15 +27,13 @@ export class BlogDetailPageComponent implements OnInit, OnDestroy {
 
   blogEntry!: BlogEntry;
   blogBackendService = inject(BlogBackendService);
-  authService = inject(AuthService);
   cdr = inject(ChangeDetectorRef);
 
   stateService = inject(StateService);
   loading = this.stateService.loading;
-  private searchString = '';
 
   constructor(
-    private route: ActivatedRoute,
+    public route: ActivatedRoute,
     private router: Router,
     private location: Location,
   ) {}

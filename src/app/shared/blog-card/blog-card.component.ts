@@ -6,18 +6,16 @@ import {
   ChangeDetectionStrategy,
   inject,
 } from '@angular/core';
-import { DatePipe, Location, NgClass } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
-import { ActivatedRoute, Router } from '@angular/router';
-import { StateService } from '../../core/service/state.service';
 import { AuthService } from '../../core/service/auth/auth.service';
 import { MatIcon } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 export interface BaseBlogEntry {
   id: number;
@@ -85,10 +83,7 @@ export class BlogCardComponent {
   @Output() backButton = new EventEmitter<void>(); // Emit back button event
   @Output() deleteBlog = new EventEmitter<number>();
 
-  activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
-  location = inject(Location);
-  stateService = inject(StateService);
   authService = inject(AuthService);
   isAuthenticated = this.authService.oidcSecurityService.authenticated;
 
